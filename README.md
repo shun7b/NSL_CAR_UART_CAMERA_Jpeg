@@ -1,7 +1,7 @@
 ov7670,NSL,DE0CV,UART,libjpeg,128*128pixel
 <br>921600bps uartgpio
 <br>vga
-<br>Motorとカメラov7670の2つ使える。
+<br>Motorとカメラov7670の2つずつ使える。
 <br>gpio使う。
 <br>fs90rモーター
 <br>uartもgpiofpgaからPCに画像おくる。
