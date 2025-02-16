@@ -1,1 +1,2 @@
 ov7670,NSL,DE0CV,UART,libjpeg,128*128pixel
+921600bps
