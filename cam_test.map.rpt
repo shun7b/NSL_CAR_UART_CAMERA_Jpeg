@@ -1,0 +1,1362 @@
+Analysis & Synthesis report for cam_test
+Sun Feb 16 20:37:39 2025
+Quartus Prime Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Analysis & Synthesis RAM Summary
+  9. State Machine - |cam_test|motor_mode
+ 10. Registers Removed During Synthesis
+ 11. General Register Statistics
+ 12. Inverted Register Statistics
+ 13. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 14. Source assignments for RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated
+ 15. Source assignments for RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated
+ 16. Source assignments for RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated
+ 17. Source assignments for RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated
+ 18. Source assignments for RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated
+ 19. Source assignments for RGB:vram_x_4|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated
+ 20. Parameter Settings for User Entity Instance: RGB:vram_x|altsyncram:altsyncram_component
+ 21. Parameter Settings for User Entity Instance: RGB:vram_x_2|altsyncram:altsyncram_component
+ 22. Parameter Settings for User Entity Instance: RGB:vram_x_1|altsyncram:altsyncram_component
+ 23. Parameter Settings for User Entity Instance: RGB:vram_x_3|altsyncram:altsyncram_component
+ 24. Parameter Settings for User Entity Instance: RGB:vram_x_5|altsyncram:altsyncram_component
+ 25. Parameter Settings for User Entity Instance: RGB:vram_x_4|altsyncram:altsyncram_component
+ 26. altsyncram Parameter Settings by Entity Instance
+ 27. Port Connectivity Checks: "uart:send"
+ 28. Port Connectivity Checks: "VGA:VGA_out"
+ 29. Port Connectivity Checks: "camera:camera_out_1"
+ 30. Port Connectivity Checks: "camera:camera_out"
+ 31. Port Connectivity Checks: "motor:motor_x_1"
+ 32. Port Connectivity Checks: "motor:motor_x"
+ 33. Post-Synthesis Netlist Statistics for Top Partition
+ 34. Elapsed Time Per Partition
+ 35. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2024  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++----------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                     ;
++---------------------------------+------------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Sun Feb 16 20:37:39 2025          ;
+; Quartus Prime Version           ; 23.1std.1 Build 993 05/14/2024 SC Lite Edition ;
+; Revision Name                   ; cam_test                                       ;
+; Top-level Entity Name           ; cam_test                                       ;
+; Family                          ; Cyclone V                                      ;
+; Logic utilization (in ALMs)     ; N/A                                            ;
+; Total registers                 ; 462                                            ;
+; Total pins                      ; 101                                            ;
+; Total virtual pins              ; 0                                              ;
+; Total block memory bits         ; 393,216                                        ;
+; Total DSP Blocks                ; 0                                              ;
+; Total HSSI RX PCSs              ; 0                                              ;
+; Total HSSI PMA RX Deserializers ; 0                                              ;
+; Total HSSI TX PCSs              ; 0                                              ;
+; Total HSSI PMA TX Serializers   ; 0                                              ;
+; Total PLLs                      ; 0                                              ;
+; Total DLLs                      ; 0                                              ;
++---------------------------------+------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CEBA4F23C7        ;                    ;
+; Top-level entity name                                                           ; cam_test           ; cam_test           ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 32          ;
+; Maximum allowed            ; 16          ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 16          ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
+;     Processor 5            ;   0.0%      ;
+;     Processor 6            ;   0.0%      ;
+;     Processor 7            ;   0.0%      ;
+;     Processor 8            ;   0.0%      ;
+;     Processors 9-16        ;   0.0%      ;
++----------------------------+-------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                             ;
++----------------------------------+-----------------+-----------------------------------+---------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                         ; File Name with Absolute Path                                                    ; Library ;
++----------------------------------+-----------------+-----------------------------------+---------------------------------------------------------------------------------+---------+
+; cam_test.v                       ; yes             ; Auto-Found Verilog HDL File       ; C:/Users/socce/Downloads/CAR_uart/cam_test.v                                    ;         ;
+; motor.v                          ; yes             ; Auto-Found Verilog HDL File       ; C:/Users/socce/Downloads/CAR_uart/motor.v                                       ;         ;
+; rgb.v                            ; yes             ; Auto-Found Wizard-Generated File  ; C:/Users/socce/Downloads/CAR_uart/rgb.v                                         ;         ;
+; altsyncram.tdf                   ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/altsyncram.tdf        ;         ;
+; stratix_ram_block.inc            ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/stratix_ram_block.inc ;         ;
+; lpm_mux.inc                      ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/lpm_mux.inc           ;         ;
+; lpm_decode.inc                   ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/lpm_decode.inc        ;         ;
+; aglobal231.inc                   ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/aglobal231.inc        ;         ;
+; a_rdenreg.inc                    ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/a_rdenreg.inc         ;         ;
+; altrom.inc                       ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/altrom.inc            ;         ;
+; altram.inc                       ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/altram.inc            ;         ;
+; altdpram.inc                     ; yes             ; Megafunction                      ; c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/altdpram.inc          ;         ;
+; db/altsyncram_hiu1.tdf           ; yes             ; Auto-Generated Megafunction       ; C:/Users/socce/Downloads/CAR_uart/db/altsyncram_hiu1.tdf                        ;         ;
+; db/decode_5la.tdf                ; yes             ; Auto-Generated Megafunction       ; C:/Users/socce/Downloads/CAR_uart/db/decode_5la.tdf                             ;         ;
+; db/decode_u0a.tdf                ; yes             ; Auto-Generated Megafunction       ; C:/Users/socce/Downloads/CAR_uart/db/decode_u0a.tdf                             ;         ;
+; db/mux_hfb.tdf                   ; yes             ; Auto-Generated Megafunction       ; C:/Users/socce/Downloads/CAR_uart/db/mux_hfb.tdf                                ;         ;
+; camera.v                         ; yes             ; Auto-Found Verilog HDL File       ; C:/Users/socce/Downloads/CAR_uart/camera.v                                      ;         ;
+; vga.v                            ; yes             ; Auto-Found Verilog HDL File       ; C:/Users/socce/Downloads/CAR_uart/vga.v                                         ;         ;
+; uart.v                           ; yes             ; Auto-Found Verilog HDL File       ; C:/Users/socce/Downloads/CAR_uart/uart.v                                        ;         ;
++----------------------------------+-----------------+-----------------------------------+---------------------------------------------------------------------------------+---------+
+
+
++-------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                 ;
++---------------------------------------------+---------------+
+; Resource                                    ; Usage         ;
++---------------------------------------------+---------------+
+; Estimate of Logic utilization (ALMs needed) ; 576           ;
+;                                             ;               ;
+; Combinational ALUT usage for logic          ; 907           ;
+;     -- 7 input functions                    ; 5             ;
+;     -- 6 input functions                    ; 220           ;
+;     -- 5 input functions                    ; 112           ;
+;     -- 4 input functions                    ; 126           ;
+;     -- <=3 input functions                  ; 444           ;
+;                                             ;               ;
+; Dedicated logic registers                   ; 462           ;
+;                                             ;               ;
+; I/O pins                                    ; 101           ;
+; Total MLAB memory bits                      ; 0             ;
+; Total block memory bits                     ; 393216        ;
+;                                             ;               ;
+; Total DSP Blocks                            ; 0             ;
+;                                             ;               ;
+; Maximum fan-out node                        ; m_clock~input ;
+; Maximum fan-out                             ; 510           ;
+; Total fan-out                               ; 6906          ;
+; Average fan-out                             ; 4.27          ;
++---------------------------------------------+---------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                            ;
++-------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------+-----------------+--------------+
+; Compilation Hierarchy Node                ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                      ; Entity Name     ; Library Name ;
++-------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------+-----------------+--------------+
+; |cam_test                                 ; 907 (289)           ; 462 (194)                 ; 393216            ; 0          ; 101  ; 0            ; |cam_test                                                                                                ; cam_test        ; work         ;
+;    |RGB:vram_x_1|                         ; 4 (0)               ; 2 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_1                                                                                   ; RGB             ; work         ;
+;       |altsyncram:altsyncram_component|   ; 4 (0)               ; 2 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_1|altsyncram:altsyncram_component                                                   ; altsyncram      ; work         ;
+;          |altsyncram_hiu1:auto_generated| ; 4 (0)               ; 2 (2)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated                    ; altsyncram_hiu1 ; work         ;
+;             |mux_hfb:mux3|                ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|mux_hfb:mux3       ; mux_hfb         ; work         ;
+;    |RGB:vram_x_2|                         ; 5 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_2                                                                                   ; RGB             ; work         ;
+;       |altsyncram:altsyncram_component|   ; 5 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_2|altsyncram:altsyncram_component                                                   ; altsyncram      ; work         ;
+;          |altsyncram_hiu1:auto_generated| ; 5 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated                    ; altsyncram_hiu1 ; work         ;
+;             |decode_5la:decode2|          ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|decode_5la:decode2 ; decode_5la      ; work         ;
+;             |mux_hfb:mux3|                ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|mux_hfb:mux3       ; mux_hfb         ; work         ;
+;    |RGB:vram_x_3|                         ; 0 (0)               ; 2 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_3                                                                                   ; RGB             ; work         ;
+;       |altsyncram:altsyncram_component|   ; 0 (0)               ; 2 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_3|altsyncram:altsyncram_component                                                   ; altsyncram      ; work         ;
+;          |altsyncram_hiu1:auto_generated| ; 0 (0)               ; 2 (2)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated                    ; altsyncram_hiu1 ; work         ;
+;    |RGB:vram_x_4|                         ; 0 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_4                                                                                   ; RGB             ; work         ;
+;       |altsyncram:altsyncram_component|   ; 0 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_4|altsyncram:altsyncram_component                                                   ; altsyncram      ; work         ;
+;          |altsyncram_hiu1:auto_generated| ; 0 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_4|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated                    ; altsyncram_hiu1 ; work         ;
+;    |RGB:vram_x_5|                         ; 1 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_5                                                                                   ; RGB             ; work         ;
+;       |altsyncram:altsyncram_component|   ; 1 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_5|altsyncram:altsyncram_component                                                   ; altsyncram      ; work         ;
+;          |altsyncram_hiu1:auto_generated| ; 1 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated                    ; altsyncram_hiu1 ; work         ;
+;             |decode_5la:decode2|          ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|decode_5la:decode2 ; decode_5la      ; work         ;
+;    |RGB:vram_x|                           ; 4 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x                                                                                     ; RGB             ; work         ;
+;       |altsyncram:altsyncram_component|   ; 4 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x|altsyncram:altsyncram_component                                                     ; altsyncram      ; work         ;
+;          |altsyncram_hiu1:auto_generated| ; 4 (0)               ; 0 (0)                     ; 65536             ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated                      ; altsyncram_hiu1 ; work         ;
+;             |mux_hfb:mux3|                ; 4 (4)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |cam_test|RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|mux_hfb:mux3         ; mux_hfb         ; work         ;
+;    |VGA:VGA_out|                          ; 33 (33)             ; 23 (23)                   ; 0                 ; 0          ; 0    ; 0            ; |cam_test|VGA:VGA_out                                                                                    ; VGA             ; work         ;
+;    |camera:camera_out_1|                  ; 393 (393)           ; 134 (134)                 ; 0                 ; 0          ; 0    ; 0            ; |cam_test|camera:camera_out_1                                                                            ; camera          ; work         ;
+;    |camera:camera_out|                    ; 62 (62)             ; 33 (33)                   ; 0                 ; 0          ; 0    ; 0            ; |cam_test|camera:camera_out                                                                              ; camera          ; work         ;
+;    |motor:motor_x_1|                      ; 60 (60)             ; 32 (32)                   ; 0                 ; 0          ; 0    ; 0            ; |cam_test|motor:motor_x_1                                                                                ; motor           ; work         ;
+;    |motor:motor_x|                        ; 20 (20)             ; 2 (2)                     ; 0                 ; 0          ; 0    ; 0            ; |cam_test|motor:motor_x                                                                                  ; motor           ; work         ;
+;    |uart:send|                            ; 36 (36)             ; 40 (40)                   ; 0                 ; 0          ; 0    ; 0            ; |cam_test|uart:send                                                                                      ; uart            ; work         ;
++-------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------+-----------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                            ;
++----------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; Name                                                                                   ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF  ;
++----------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 16384        ; 4            ; 16384        ; 4            ; 65536 ; None ;
+; RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 16384        ; 4            ; 16384        ; 4            ; 65536 ; None ;
+; RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 16384        ; 4            ; 16384        ; 4            ; 65536 ; None ;
+; RGB:vram_x_4|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 16384        ; 4            ; 16384        ; 4            ; 65536 ; None ;
+; RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 16384        ; 4            ; 16384        ; 4            ; 65536 ; None ;
+; RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|ALTSYNCRAM   ; AUTO ; Simple Dual Port ; 16384        ; 4            ; 16384        ; 4            ; 65536 ; None ;
++----------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+
+
+Encoding Type:  One-Hot
++-----------------------------------------------------------------------------------------------------+
+; State Machine - |cam_test|motor_mode                                                                ;
++----------------+----------------+----------------+----------------+----------------+----------------+
+; Name           ; motor_mode.011 ; motor_mode.010 ; motor_mode.001 ; motor_mode.000 ; motor_mode.100 ;
++----------------+----------------+----------------+----------------+----------------+----------------+
+; motor_mode.000 ; 0              ; 0              ; 0              ; 0              ; 0              ;
+; motor_mode.001 ; 0              ; 0              ; 1              ; 1              ; 0              ;
+; motor_mode.010 ; 0              ; 1              ; 0              ; 1              ; 0              ;
+; motor_mode.011 ; 1              ; 0              ; 0              ; 1              ; 0              ;
+; motor_mode.100 ; 0              ; 0              ; 0              ; 1              ; 1              ;
++----------------+----------------+----------------+----------------+----------------+----------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                                                                                              ;
++--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+; Register name                                                                                    ; Reason for Removal                                                                                           ;
++--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+; VGA_plot_num_x[10..31]                                                                           ; Stuck at GND due to stuck port data_in                                                                       ;
+; VGA_plot_num_y[0..6,17..31]                                                                      ; Stuck at GND due to stuck port data_in                                                                       ;
+; plot_num_x[10..31]                                                                               ; Stuck at GND due to stuck port data_in                                                                       ;
+; plot_num_y[0..6,17..31]                                                                          ; Stuck at GND due to stuck port data_in                                                                       ;
+; plot_num_x2[10..31]                                                                              ; Stuck at GND due to stuck port data_in                                                                       ;
+; plot_num_y2[0..6,17..31]                                                                         ; Stuck at GND due to stuck port data_in                                                                       ;
+; motor:motor_x_1|RL_diff[0..30]                                                                   ; Stuck at GND due to stuck port data_in                                                                       ;
+; motor:motor_x|RL_diff[0..3,5,7,10..13,16..30]                                                    ; Stuck at GND due to stuck port data_in                                                                       ;
+; VGA_plot_num_y[14..16]                                                                           ; Lost fanout                                                                                                  ;
+; plot_num_y[14..16]                                                                               ; Lost fanout                                                                                                  ;
+; plot_num_y2[14..16]                                                                              ; Lost fanout                                                                                                  ;
+; camera:camera_out_1|clk                                                                          ; Merged with VGA:VGA_out|vga_clock                                                                            ;
+; camera:camera_out|clk                                                                            ; Merged with VGA:VGA_out|vga_clock                                                                            ;
+; RGB:vram_x_4|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ; Merged with RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ;
+; RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ; Merged with RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ;
+; RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ; Merged with RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ;
+; RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0]   ; Merged with RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|out_address_reg_b[0] ;
+; motor:motor_x|RL_diff[4,6,8,9,15]                                                                ; Merged with motor:motor_x|RL_diff[14]                                                                        ;
+; camera:camera_out|count[9]                                                                       ; Merged with camera:camera_out_1|count[9]                                                                     ;
+; camera:camera_out|count[8]                                                                       ; Merged with camera:camera_out_1|count[8]                                                                     ;
+; camera:camera_out|count[7]                                                                       ; Merged with camera:camera_out_1|count[7]                                                                     ;
+; camera:camera_out|count[6]                                                                       ; Merged with camera:camera_out_1|count[6]                                                                     ;
+; camera:camera_out|count[5]                                                                       ; Merged with camera:camera_out_1|count[5]                                                                     ;
+; camera:camera_out|count[2]                                                                       ; Merged with camera:camera_out_1|count[2]                                                                     ;
+; camera:camera_out|count[1]                                                                       ; Merged with camera:camera_out_1|count[1]                                                                     ;
+; camera:camera_out|count[4]                                                                       ; Merged with camera:camera_out_1|count[4]                                                                     ;
+; camera:camera_out|count[3]                                                                       ; Merged with camera:camera_out_1|count[3]                                                                     ;
+; camera:camera_out|count[0]                                                                       ; Merged with camera:camera_out_1|count[0]                                                                     ;
+; camera:camera_out|I2C_START_STOP[9]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[9]                                                            ;
+; camera:camera_out|I2C_START_STOP[8]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[8]                                                            ;
+; camera:camera_out|I2C_START_STOP[7]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[7]                                                            ;
+; camera:camera_out|I2C_START_STOP[6]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[6]                                                            ;
+; camera:camera_out|I2C_START_STOP[5]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[5]                                                            ;
+; camera:camera_out|I2C_START_STOP[4]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[4]                                                            ;
+; camera:camera_out|I2C_START_STOP[3]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[3]                                                            ;
+; camera:camera_out|I2C_START_STOP[2]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[2]                                                            ;
+; camera:camera_out|I2C_START_STOP[1]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[1]                                                            ;
+; camera:camera_out|I2C_START_STOP[0]                                                              ; Merged with camera:camera_out_1|I2C_START_STOP[0]                                                            ;
+; camera:camera_out|start_count[31]                                                                ; Merged with camera:camera_out_1|start_count[31]                                                              ;
+; camera:camera_out|start_count[30]                                                                ; Merged with camera:camera_out_1|start_count[30]                                                              ;
+; camera:camera_out|start_count[29]                                                                ; Merged with camera:camera_out_1|start_count[29]                                                              ;
+; camera:camera_out|start_count[28]                                                                ; Merged with camera:camera_out_1|start_count[28]                                                              ;
+; camera:camera_out|start_count[27]                                                                ; Merged with camera:camera_out_1|start_count[27]                                                              ;
+; camera:camera_out|start_count[26]                                                                ; Merged with camera:camera_out_1|start_count[26]                                                              ;
+; camera:camera_out|start_count[25]                                                                ; Merged with camera:camera_out_1|start_count[25]                                                              ;
+; camera:camera_out|start_count[24]                                                                ; Merged with camera:camera_out_1|start_count[24]                                                              ;
+; camera:camera_out|start_count[23]                                                                ; Merged with camera:camera_out_1|start_count[23]                                                              ;
+; camera:camera_out|start_count[22]                                                                ; Merged with camera:camera_out_1|start_count[22]                                                              ;
+; camera:camera_out|start_count[21]                                                                ; Merged with camera:camera_out_1|start_count[21]                                                              ;
+; camera:camera_out|start_count[20]                                                                ; Merged with camera:camera_out_1|start_count[20]                                                              ;
+; camera:camera_out|start_count[19]                                                                ; Merged with camera:camera_out_1|start_count[19]                                                              ;
+; camera:camera_out|start_count[18]                                                                ; Merged with camera:camera_out_1|start_count[18]                                                              ;
+; camera:camera_out|start_count[17]                                                                ; Merged with camera:camera_out_1|start_count[17]                                                              ;
+; camera:camera_out|start_count[16]                                                                ; Merged with camera:camera_out_1|start_count[16]                                                              ;
+; camera:camera_out|start_count[15]                                                                ; Merged with camera:camera_out_1|start_count[15]                                                              ;
+; camera:camera_out|start_count[14]                                                                ; Merged with camera:camera_out_1|start_count[14]                                                              ;
+; camera:camera_out|start_count[13]                                                                ; Merged with camera:camera_out_1|start_count[13]                                                              ;
+; camera:camera_out|start_count[12]                                                                ; Merged with camera:camera_out_1|start_count[12]                                                              ;
+; camera:camera_out|start_count[11]                                                                ; Merged with camera:camera_out_1|start_count[11]                                                              ;
+; camera:camera_out|start_count[10]                                                                ; Merged with camera:camera_out_1|start_count[10]                                                              ;
+; camera:camera_out|start_count[9]                                                                 ; Merged with camera:camera_out_1|start_count[9]                                                               ;
+; camera:camera_out|start_count[8]                                                                 ; Merged with camera:camera_out_1|start_count[8]                                                               ;
+; camera:camera_out|start_count[7]                                                                 ; Merged with camera:camera_out_1|start_count[7]                                                               ;
+; camera:camera_out|start_count[6]                                                                 ; Merged with camera:camera_out_1|start_count[6]                                                               ;
+; camera:camera_out|start_count[5]                                                                 ; Merged with camera:camera_out_1|start_count[5]                                                               ;
+; camera:camera_out|start_count[4]                                                                 ; Merged with camera:camera_out_1|start_count[4]                                                               ;
+; camera:camera_out|start_count[3]                                                                 ; Merged with camera:camera_out_1|start_count[3]                                                               ;
+; camera:camera_out|start_count[2]                                                                 ; Merged with camera:camera_out_1|start_count[2]                                                               ;
+; camera:camera_out|start_count[1]                                                                 ; Merged with camera:camera_out_1|start_count[1]                                                               ;
+; camera:camera_out|start_count[0]                                                                 ; Merged with camera:camera_out_1|start_count[0]                                                               ;
+; camera:camera_out|pc[9]                                                                          ; Merged with camera:camera_out_1|pc[9]                                                                        ;
+; camera:camera_out|pc[8]                                                                          ; Merged with camera:camera_out_1|pc[8]                                                                        ;
+; camera:camera_out|pc[7]                                                                          ; Merged with camera:camera_out_1|pc[7]                                                                        ;
+; camera:camera_out|pc[6]                                                                          ; Merged with camera:camera_out_1|pc[6]                                                                        ;
+; camera:camera_out|pc[5]                                                                          ; Merged with camera:camera_out_1|pc[5]                                                                        ;
+; camera:camera_out|pc[4]                                                                          ; Merged with camera:camera_out_1|pc[4]                                                                        ;
+; camera:camera_out|pc[3]                                                                          ; Merged with camera:camera_out_1|pc[3]                                                                        ;
+; camera:camera_out|pc[2]                                                                          ; Merged with camera:camera_out_1|pc[2]                                                                        ;
+; camera:camera_out|pc[1]                                                                          ; Merged with camera:camera_out_1|pc[1]                                                                        ;
+; camera:camera_out|pc[0]                                                                          ; Merged with camera:camera_out_1|pc[0]                                                                        ;
+; camera:camera_out|sda_reg                                                                        ; Merged with camera:camera_out_1|sda_reg                                                                      ;
+; camera:camera_out|scl_clk[15]                                                                    ; Merged with camera:camera_out_1|scl_clk[15]                                                                  ;
+; camera:camera_out|scl_clk[14]                                                                    ; Merged with camera:camera_out_1|scl_clk[14]                                                                  ;
+; camera:camera_out|scl_clk[13]                                                                    ; Merged with camera:camera_out_1|scl_clk[13]                                                                  ;
+; camera:camera_out|scl_clk[12]                                                                    ; Merged with camera:camera_out_1|scl_clk[12]                                                                  ;
+; camera:camera_out|scl_clk[11]                                                                    ; Merged with camera:camera_out_1|scl_clk[11]                                                                  ;
+; camera:camera_out|scl_clk[10]                                                                    ; Merged with camera:camera_out_1|scl_clk[10]                                                                  ;
+; camera:camera_out|scl_clk[9]                                                                     ; Merged with camera:camera_out_1|scl_clk[9]                                                                   ;
+; camera:camera_out|scl_clk[8]                                                                     ; Merged with camera:camera_out_1|scl_clk[8]                                                                   ;
+; camera:camera_out|scl_clk[7]                                                                     ; Merged with camera:camera_out_1|scl_clk[7]                                                                   ;
+; camera:camera_out|scl_clk[6]                                                                     ; Merged with camera:camera_out_1|scl_clk[6]                                                                   ;
+; camera:camera_out|scl_clk[5]                                                                     ; Merged with camera:camera_out_1|scl_clk[5]                                                                   ;
+; camera:camera_out|scl_clk[4]                                                                     ; Merged with camera:camera_out_1|scl_clk[4]                                                                   ;
+; camera:camera_out|scl_clk[3]                                                                     ; Merged with camera:camera_out_1|scl_clk[3]                                                                   ;
+; camera:camera_out|scl_clk[2]                                                                     ; Merged with camera:camera_out_1|scl_clk[2]                                                                   ;
+; camera:camera_out|scl_clk[1]                                                                     ; Merged with camera:camera_out_1|scl_clk[1]                                                                   ;
+; camera:camera_out|scl_clk[0]                                                                     ; Merged with camera:camera_out_1|scl_clk[0]                                                                   ;
+; camera:camera_out|scl_reg                                                                        ; Merged with camera:camera_out_1|scl_reg                                                                      ;
+; motor:motor_x|count[30]                                                                          ; Merged with motor:motor_x_1|count[30]                                                                        ;
+; motor:motor_x|count[29]                                                                          ; Merged with motor:motor_x_1|count[29]                                                                        ;
+; motor:motor_x|count[28]                                                                          ; Merged with motor:motor_x_1|count[28]                                                                        ;
+; motor:motor_x|count[27]                                                                          ; Merged with motor:motor_x_1|count[27]                                                                        ;
+; motor:motor_x|count[26]                                                                          ; Merged with motor:motor_x_1|count[26]                                                                        ;
+; motor:motor_x|count[25]                                                                          ; Merged with motor:motor_x_1|count[25]                                                                        ;
+; motor:motor_x|count[24]                                                                          ; Merged with motor:motor_x_1|count[24]                                                                        ;
+; motor:motor_x|count[23]                                                                          ; Merged with motor:motor_x_1|count[23]                                                                        ;
+; motor:motor_x|count[22]                                                                          ; Merged with motor:motor_x_1|count[22]                                                                        ;
+; motor:motor_x|count[21]                                                                          ; Merged with motor:motor_x_1|count[21]                                                                        ;
+; motor:motor_x|count[20]                                                                          ; Merged with motor:motor_x_1|count[20]                                                                        ;
+; motor:motor_x|count[19]                                                                          ; Merged with motor:motor_x_1|count[19]                                                                        ;
+; motor:motor_x|count[18]                                                                          ; Merged with motor:motor_x_1|count[18]                                                                        ;
+; motor:motor_x|count[17]                                                                          ; Merged with motor:motor_x_1|count[17]                                                                        ;
+; motor:motor_x|count[16]                                                                          ; Merged with motor:motor_x_1|count[16]                                                                        ;
+; motor:motor_x|count[15]                                                                          ; Merged with motor:motor_x_1|count[15]                                                                        ;
+; motor:motor_x|count[14]                                                                          ; Merged with motor:motor_x_1|count[14]                                                                        ;
+; motor:motor_x|count[13]                                                                          ; Merged with motor:motor_x_1|count[13]                                                                        ;
+; motor:motor_x|count[12]                                                                          ; Merged with motor:motor_x_1|count[12]                                                                        ;
+; motor:motor_x|count[11]                                                                          ; Merged with motor:motor_x_1|count[11]                                                                        ;
+; motor:motor_x|count[10]                                                                          ; Merged with motor:motor_x_1|count[10]                                                                        ;
+; motor:motor_x|count[9]                                                                           ; Merged with motor:motor_x_1|count[9]                                                                         ;
+; motor:motor_x|count[8]                                                                           ; Merged with motor:motor_x_1|count[8]                                                                         ;
+; motor:motor_x|count[7]                                                                           ; Merged with motor:motor_x_1|count[7]                                                                         ;
+; motor:motor_x|count[6]                                                                           ; Merged with motor:motor_x_1|count[6]                                                                         ;
+; motor:motor_x|count[5]                                                                           ; Merged with motor:motor_x_1|count[5]                                                                         ;
+; motor:motor_x|count[4]                                                                           ; Merged with motor:motor_x_1|count[4]                                                                         ;
+; motor:motor_x|count[3]                                                                           ; Merged with motor:motor_x_1|count[3]                                                                         ;
+; motor:motor_x|count[2]                                                                           ; Merged with motor:motor_x_1|count[2]                                                                         ;
+; motor:motor_x|count[1]                                                                           ; Merged with motor:motor_x_1|count[1]                                                                         ;
+; motor:motor_x|count[0]                                                                           ; Merged with motor:motor_x_1|count[0]                                                                         ;
+; RGB:vram_x_4|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ; Merged with RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ;
+; RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ; Merged with RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ;
+; RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ; Merged with RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ;
+; RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]       ; Merged with RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|address_reg_b[0]     ;
+; camera:camera_out|adr[6]                                                                         ; Merged with camera:camera_out_1|adr[6]                                                                       ;
+; camera:camera_out|sda_sig[14]                                                                    ; Merged with camera:camera_out_1|sda_sig[14]                                                                  ;
+; camera:camera_out|adr[5]                                                                         ; Merged with camera:camera_out_1|adr[5]                                                                       ;
+; camera:camera_out|sda_sig[13]                                                                    ; Merged with camera:camera_out_1|sda_sig[13]                                                                  ;
+; camera:camera_out|adr[4]                                                                         ; Merged with camera:camera_out_1|adr[4]                                                                       ;
+; camera:camera_out|sda_sig[12]                                                                    ; Merged with camera:camera_out_1|sda_sig[12]                                                                  ;
+; camera:camera_out|adr[3]                                                                         ; Merged with camera:camera_out_1|adr[3]                                                                       ;
+; camera:camera_out|sda_sig[11]                                                                    ; Merged with camera:camera_out_1|sda_sig[11]                                                                  ;
+; camera:camera_out|adr[2]                                                                         ; Merged with camera:camera_out_1|adr[2]                                                                       ;
+; camera:camera_out|sda_sig[10]                                                                    ; Merged with camera:camera_out_1|sda_sig[10]                                                                  ;
+; camera:camera_out|adr[1]                                                                         ; Merged with camera:camera_out_1|adr[1]                                                                       ;
+; camera:camera_out|sda_sig[9]                                                                     ; Merged with camera:camera_out_1|sda_sig[9]                                                                   ;
+; camera:camera_out|adr[0]                                                                         ; Merged with camera:camera_out_1|adr[0]                                                                       ;
+; camera:camera_out|sda_sig[8]                                                                     ; Merged with camera:camera_out_1|sda_sig[8]                                                                   ;
+; camera:camera_out|sda_sig[7]                                                                     ; Merged with camera:camera_out_1|sda_sig[7]                                                                   ;
+; camera:camera_out|sda_sig[6]                                                                     ; Merged with camera:camera_out_1|sda_sig[6]                                                                   ;
+; camera:camera_out|sda_sig[5]                                                                     ; Merged with camera:camera_out_1|sda_sig[5]                                                                   ;
+; camera:camera_out|sda_sig[4]                                                                     ; Merged with camera:camera_out_1|sda_sig[4]                                                                   ;
+; camera:camera_out|sda_sig[3]                                                                     ; Merged with camera:camera_out_1|sda_sig[3]                                                                   ;
+; camera:camera_out|sda_sig[2]                                                                     ; Merged with camera:camera_out_1|sda_sig[2]                                                                   ;
+; camera:camera_out|sda_sig[1]                                                                     ; Merged with camera:camera_out_1|sda_sig[1]                                                                   ;
+; camera:camera_out|sda_sig[0]                                                                     ; Merged with camera:camera_out_1|sda_sig[0]                                                                   ;
+; camera:camera_out_1|adr[0]                                                                       ; Stuck at GND due to stuck port data_in                                                                       ;
+; motor_mode.000                                                                                   ; Lost fanout                                                                                                  ;
+; motor_mode.010                                                                                   ; Lost fanout                                                                                                  ;
+; motor_mode~5                                                                                     ; Lost fanout                                                                                                  ;
+; motor_mode~6                                                                                     ; Lost fanout                                                                                                  ;
+; Total Number of Removed Registers = 350                                                          ;                                                                                                              ;
++--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 462   ;
+; Number of registers using Synchronous Clear  ; 212   ;
+; Number of registers using Synchronous Load   ; 54    ;
+; Number of registers using Asynchronous Clear ; 458   ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 245   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++--------------------------------------------------+
+; Inverted Register Statistics                     ;
++----------------------------------------+---------+
+; Inverted Register                      ; Fan out ;
++----------------------------------------+---------+
+; uart:send|internal_TxD_out             ; 2       ;
+; Total number of inverted registers = 1 ;         ;
++----------------------------------------+---------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------+
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|VGA:VGA_out|hs_cnt[6]                 ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|VGA:VGA_out|vs_cnt[8]                 ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |cam_test|uart_data2[0]                         ;
+; 3:1                ; 7 bits    ; 14 LEs        ; 7 LEs                ; 7 LEs                  ; Yes        ; |cam_test|uart:send|ShiftCount[3]               ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |cam_test|uart:send|Tx_ShiftReg[1]              ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |cam_test|count[15]                             ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|pc[3]             ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|I2C_START_STOP[2] ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |cam_test|camera:camera_out_1|adr[5]            ;
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|sda_sig[10]       ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|plot_num_x[0]     ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|plot_num_y[9]     ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|camera:camera_out|plot_num_x[9]       ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |cam_test|camera:camera_out|plot_num_y[4]       ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |cam_test|rgb_num[11]                           ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |cam_test|uart_time[0]                          ;
+; 4:1                ; 10 bits   ; 20 LEs        ; 10 LEs               ; 10 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|count[8]          ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; Yes        ; |cam_test|uart_data_in[5]                       ;
+; 5:1                ; 32 bits   ; 96 LEs        ; 64 LEs               ; 32 LEs                 ; Yes        ; |cam_test|camera:camera_out_1|start_count[1]    ;
+; 7:1                ; 4 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; Yes        ; |cam_test|motor_sw[3]                           ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; No         ; |cam_test|VGA_G                                 ;
+; 5:1                ; 5 bits    ; 15 LEs        ; 15 LEs               ; 0 LEs                  ; No         ; |cam_test|motor_mode                            ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------+
+; Source assignments for RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated ;
++---------------------------------+--------------------+------+------------------------------------+
+; Assignment                      ; Value              ; From ; To                                 ;
++---------------------------------+--------------------+------+------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                  ;
++---------------------------------+--------------------+------+------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for RGB:vram_x_2|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for RGB:vram_x_1|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for RGB:vram_x_3|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for RGB:vram_x_5|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for RGB:vram_x_4|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
+
+
++-----------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: RGB:vram_x|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-----------------------------+
+; Parameter Name                     ; Value                ; Type                        ;
++------------------------------------+----------------------+-----------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                     ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                  ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE              ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                     ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                     ;
+; WIDTH_A                            ; 4                    ; Signed Integer              ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer              ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer              ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                     ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                     ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                     ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                     ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                     ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                     ;
+; WIDTH_B                            ; 4                    ; Signed Integer              ;
+; WIDTHAD_B                          ; 14                   ; Signed Integer              ;
+; NUMWORDS_B                         ; 16384                ; Signed Integer              ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                     ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                     ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                     ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                     ;
+; OUTDATA_REG_B                      ; CLOCK1               ; Untyped                     ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                     ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                     ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                     ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                     ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                     ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                     ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                     ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer              ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                     ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                     ;
+; BYTE_SIZE                          ; 8                    ; Untyped                     ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                     ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                     ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                     ;
+; INIT_FILE                          ; UNUSED               ; Untyped                     ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                     ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                     ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                     ;
+; CLOCK_ENABLE_INPUT_B               ; BYPASS               ; Untyped                     ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                     ;
+; CLOCK_ENABLE_OUTPUT_B              ; BYPASS               ; Untyped                     ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                     ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                     ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                     ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                     ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                     ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                     ;
+; CBXI_PARAMETER                     ; altsyncram_hiu1      ; Untyped                     ;
++------------------------------------+----------------------+-----------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: RGB:vram_x_2|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-------------------------------+
+; Parameter Name                     ; Value                ; Type                          ;
++------------------------------------+----------------------+-------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                       ;
+; WIDTH_A                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer                ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WIDTH_B                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_B                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_B                         ; 16384                ; Signed Integer                ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                       ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                       ;
+; OUTDATA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_B               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                       ;
+; CBXI_PARAMETER                     ; altsyncram_hiu1      ; Untyped                       ;
++------------------------------------+----------------------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: RGB:vram_x_1|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-------------------------------+
+; Parameter Name                     ; Value                ; Type                          ;
++------------------------------------+----------------------+-------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                       ;
+; WIDTH_A                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer                ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WIDTH_B                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_B                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_B                         ; 16384                ; Signed Integer                ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                       ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                       ;
+; OUTDATA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_B               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                       ;
+; CBXI_PARAMETER                     ; altsyncram_hiu1      ; Untyped                       ;
++------------------------------------+----------------------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: RGB:vram_x_3|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-------------------------------+
+; Parameter Name                     ; Value                ; Type                          ;
++------------------------------------+----------------------+-------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                       ;
+; WIDTH_A                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer                ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WIDTH_B                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_B                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_B                         ; 16384                ; Signed Integer                ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                       ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                       ;
+; OUTDATA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_B               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                       ;
+; CBXI_PARAMETER                     ; altsyncram_hiu1      ; Untyped                       ;
++------------------------------------+----------------------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: RGB:vram_x_5|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-------------------------------+
+; Parameter Name                     ; Value                ; Type                          ;
++------------------------------------+----------------------+-------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                       ;
+; WIDTH_A                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer                ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WIDTH_B                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_B                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_B                         ; 16384                ; Signed Integer                ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                       ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                       ;
+; OUTDATA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_B               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                       ;
+; CBXI_PARAMETER                     ; altsyncram_hiu1      ; Untyped                       ;
++------------------------------------+----------------------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: RGB:vram_x_4|altsyncram:altsyncram_component ;
++------------------------------------+----------------------+-------------------------------+
+; Parameter Name                     ; Value                ; Type                          ;
++------------------------------------+----------------------+-------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                       ;
+; WIDTH_A                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_A                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_A                         ; 16384                ; Signed Integer                ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                       ;
+; WIDTH_B                            ; 4                    ; Signed Integer                ;
+; WIDTHAD_B                          ; 14                   ; Signed Integer                ;
+; NUMWORDS_B                         ; 16384                ; Signed Integer                ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                       ;
+; ADDRESS_REG_B                      ; CLOCK1               ; Untyped                       ;
+; OUTDATA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Signed Integer                ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_A               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_INPUT_B               ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; BYPASS               ; Untyped                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                       ;
+; CBXI_PARAMETER                     ; altsyncram_hiu1      ; Untyped                       ;
++------------------------------------+----------------------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------+
+; altsyncram Parameter Settings by Entity Instance                                         ;
++-------------------------------------------+----------------------------------------------+
+; Name                                      ; Value                                        ;
++-------------------------------------------+----------------------------------------------+
+; Number of entity instances                ; 6                                            ;
+; Entity Instance                           ; RGB:vram_x|altsyncram:altsyncram_component   ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                    ;
+;     -- WIDTH_A                            ; 4                                            ;
+;     -- NUMWORDS_A                         ; 16384                                        ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                 ;
+;     -- WIDTH_B                            ; 4                                            ;
+;     -- NUMWORDS_B                         ; 16384                                        ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; CLOCK1                                       ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
+; Entity Instance                           ; RGB:vram_x_2|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                    ;
+;     -- WIDTH_A                            ; 4                                            ;
+;     -- NUMWORDS_A                         ; 16384                                        ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                 ;
+;     -- WIDTH_B                            ; 4                                            ;
+;     -- NUMWORDS_B                         ; 16384                                        ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; CLOCK1                                       ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
+; Entity Instance                           ; RGB:vram_x_1|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                    ;
+;     -- WIDTH_A                            ; 4                                            ;
+;     -- NUMWORDS_A                         ; 16384                                        ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                 ;
+;     -- WIDTH_B                            ; 4                                            ;
+;     -- NUMWORDS_B                         ; 16384                                        ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; CLOCK1                                       ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
+; Entity Instance                           ; RGB:vram_x_3|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                    ;
+;     -- WIDTH_A                            ; 4                                            ;
+;     -- NUMWORDS_A                         ; 16384                                        ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                 ;
+;     -- WIDTH_B                            ; 4                                            ;
+;     -- NUMWORDS_B                         ; 16384                                        ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; CLOCK1                                       ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
+; Entity Instance                           ; RGB:vram_x_5|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                    ;
+;     -- WIDTH_A                            ; 4                                            ;
+;     -- NUMWORDS_A                         ; 16384                                        ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                 ;
+;     -- WIDTH_B                            ; 4                                            ;
+;     -- NUMWORDS_B                         ; 16384                                        ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; CLOCK1                                       ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
+; Entity Instance                           ; RGB:vram_x_4|altsyncram:altsyncram_component ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                    ;
+;     -- WIDTH_A                            ; 4                                            ;
+;     -- NUMWORDS_A                         ; 16384                                        ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                 ;
+;     -- WIDTH_B                            ; 4                                            ;
+;     -- NUMWORDS_B                         ; 16384                                        ;
+;     -- ADDRESS_REG_B                      ; CLOCK1                                       ;
+;     -- OUTDATA_REG_B                      ; CLOCK1                                       ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                         ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                    ;
++-------------------------------------------+----------------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "uart:send"                                                                                         ;
++---------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port                ; Type   ; Severity ; Details                                                                             ;
++---------------------+--------+----------+-------------------------------------------------------------------------------------+
+; Tx_Finish_o         ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; Tx_ShiftClock_o     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; Tx_Ready_o          ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; Tx_Enable_i         ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; Tx_OddParity_i      ; Input  ; Info     ; Stuck at GND                                                                        ;
+; Tx_ParityEN_i       ; Input  ; Info     ; Stuck at GND                                                                        ;
+; Tx_BitLength_i      ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; Freq_Divide_Param_i ; Input  ; Info     ; Stuck at GND                                                                        ;
++---------------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "VGA:VGA_out"                                                                         ;
++-------+--------+----------+-------------------------------------------------------------------------------------+
+; Port  ; Type   ; Severity ; Details                                                                             ;
++-------+--------+----------+-------------------------------------------------------------------------------------+
+; VGA_R ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; VGA_B ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; VGA_G ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEX0  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++-------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "camera:camera_out_1"                                                                    ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; Port     ; Type   ; Severity ; Details                                                                             ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; time_RGB ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "camera:camera_out"                                                                      ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; Port     ; Type   ; Severity ; Details                                                                             ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; time_RGB ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "motor:motor_x_1"                                                                       ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+; Port    ; Type   ; Severity ; Details                                                                             ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+; set_RL  ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; HEX     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEXpwm  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEXpwm1 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEXpwm2 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEXpwm3 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEXpwm4 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; HEXpwm5 ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "motor:motor_x"                                                                        ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                             ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+; set_RL ; Input  ; Info     ; Stuck at GND                                                                        ;
+; HEX    ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++--------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 462                         ;
+;     CLR               ; 113                         ;
+;     CLR SCLR          ; 68                          ;
+;     CLR SLD           ; 32                          ;
+;     ENA CLR           ; 79                          ;
+;     ENA CLR SCLR      ; 144                         ;
+;     ENA CLR SLD       ; 22                          ;
+;     plain             ; 4                           ;
+; arriav_io_obuf        ; 4                           ;
+; arriav_lcell_comb     ; 912                         ;
+;     arith             ; 315                         ;
+;         1 data inputs ; 305                         ;
+;         2 data inputs ; 10                          ;
+;     extend            ; 5                           ;
+;         7 data inputs ; 5                           ;
+;     normal            ; 592                         ;
+;         0 data inputs ; 2                           ;
+;         1 data inputs ; 6                           ;
+;         2 data inputs ; 79                          ;
+;         3 data inputs ; 47                          ;
+;         4 data inputs ; 126                         ;
+;         5 data inputs ; 112                         ;
+;         6 data inputs ; 220                         ;
+; boundary_port         ; 101                         ;
+; stratixv_ram_block    ; 48                          ;
+;                       ;                             ;
+; Max LUT depth         ; 7.00                        ;
+; Average LUT depth     ; 3.52                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:01     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition
+    Info: Processing started: Sun Feb 16 20:37:33 2025
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off cam_test -c cam_test
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 16 of the 32 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file vram.v
+    Info (12023): Found entity 1: vram File: C:/Users/socce/Downloads/CAR_uart/vram.v Line: 40
+Info (12021): Found 1 design units, including 1 entities, in source file vram2.v
+    Info (12023): Found entity 1: vram2 File: C:/Users/socce/Downloads/CAR_uart/vram2.v Line: 40
+Info (12021): Found 1 design units, including 1 entities, in source file r.v
+    Info (12023): Found entity 1: R File: C:/Users/socce/Downloads/CAR_uart/R.v Line: 40
+Info (12021): Found 1 design units, including 1 entities, in source file g.v
+    Info (12023): Found entity 1: G File: C:/Users/socce/Downloads/CAR_uart/G.v Line: 40
+Info (12021): Found 1 design units, including 1 entities, in source file b.v
+    Info (12023): Found entity 1: B File: C:/Users/socce/Downloads/CAR_uart/B.v Line: 40
+Warning (12125): Using design file cam_test.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: cam_test File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 8
+Info (12127): Elaborating entity "cam_test" for the top level hierarchy
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(95): object "VGA_plot_num_x2" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 95
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(96): object "VGA_plot_num_y2" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 96
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(118): object "_send_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 118
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(119): object "_send_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 119
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(129): object "_VGA_out_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 129
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(130): object "_VGA_out_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 130
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(146): object "_camera_out_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 146
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(147): object "_camera_out_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 147
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(163): object "_camera_out_1_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 163
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(164): object "_camera_out_1_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 164
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(170): object "_vram_x_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 170
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(171): object "_vram_x_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 171
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(177): object "_vram_x_5_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 177
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(178): object "_vram_x_5_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 178
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(184): object "_vram_x_4_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 184
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(185): object "_vram_x_4_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 185
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(191): object "_vram_x_3_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 191
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(192): object "_vram_x_3_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 192
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(198): object "_vram_x_2_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 198
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(199): object "_vram_x_2_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 199
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(205): object "_vram_x_1_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 205
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(206): object "_vram_x_1_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 206
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(219): object "_motor_x_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 219
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(220): object "_motor_x_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 220
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(233): object "_motor_x_1_p_reset" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 233
+Warning (10036): Verilog HDL or VHDL warning at cam_test.v(234): object "_motor_x_1_m_clock" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 234
+Warning (12125): Using design file motor.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: motor File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 8
+Info (12128): Elaborating entity "motor" for hierarchy "motor:motor_x" File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 293
+Warning (10036): Verilog HDL or VHDL warning at motor.v(43): object "_net_3" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 43
+Warning (10240): Verilog HDL Always Construct warning at motor.v(334): inferring latch(es) for variable "in_botan", which holds its previous value in one or more paths through the always construct File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[0]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[1]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[2]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[3]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[4]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[5]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[6]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[7]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[8]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[9]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[10]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[11]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[12]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[13]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[14]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[15]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[16]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[17]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[18]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[19]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[20]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[21]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[22]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[23]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[24]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[25]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[26]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[27]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[28]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[29]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Info (10041): Inferred latch for "in_botan[30]" at motor.v(334) File: C:/Users/socce/Downloads/CAR_uart/motor.v Line: 334
+Warning (12125): Using design file rgb.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: RGB File: C:/Users/socce/Downloads/CAR_uart/rgb.v Line: 40
+Info (12128): Elaborating entity "RGB" for hierarchy "RGB:vram_x" File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 295
+Info (12128): Elaborating entity "altsyncram" for hierarchy "RGB:vram_x|altsyncram:altsyncram_component" File: C:/Users/socce/Downloads/CAR_uart/rgb.v Line: 91
+Info (12130): Elaborated megafunction instantiation "RGB:vram_x|altsyncram:altsyncram_component" File: C:/Users/socce/Downloads/CAR_uart/rgb.v Line: 91
+Info (12133): Instantiated megafunction "RGB:vram_x|altsyncram:altsyncram_component" with the following parameter: File: C:/Users/socce/Downloads/CAR_uart/rgb.v Line: 91
+    Info (12134): Parameter "address_aclr_b" = "NONE"
+    Info (12134): Parameter "address_reg_b" = "CLOCK1"
+    Info (12134): Parameter "clock_enable_input_a" = "BYPASS"
+    Info (12134): Parameter "clock_enable_input_b" = "BYPASS"
+    Info (12134): Parameter "clock_enable_output_b" = "BYPASS"
+    Info (12134): Parameter "intended_device_family" = "Cyclone V"
+    Info (12134): Parameter "lpm_type" = "altsyncram"
+    Info (12134): Parameter "numwords_a" = "16384"
+    Info (12134): Parameter "numwords_b" = "16384"
+    Info (12134): Parameter "operation_mode" = "DUAL_PORT"
+    Info (12134): Parameter "outdata_aclr_b" = "NONE"
+    Info (12134): Parameter "outdata_reg_b" = "CLOCK1"
+    Info (12134): Parameter "power_up_uninitialized" = "FALSE"
+    Info (12134): Parameter "read_during_write_mode_mixed_ports" = "DONT_CARE"
+    Info (12134): Parameter "widthad_a" = "14"
+    Info (12134): Parameter "widthad_b" = "14"
+    Info (12134): Parameter "width_a" = "4"
+    Info (12134): Parameter "width_b" = "4"
+    Info (12134): Parameter "width_byteena_a" = "1"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_hiu1.tdf
+    Info (12023): Found entity 1: altsyncram_hiu1 File: C:/Users/socce/Downloads/CAR_uart/db/altsyncram_hiu1.tdf Line: 34
+Info (12128): Elaborating entity "altsyncram_hiu1" for hierarchy "RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated" File: c:/intelfpga_lite/23.1std/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_5la.tdf
+    Info (12023): Found entity 1: decode_5la File: C:/Users/socce/Downloads/CAR_uart/db/decode_5la.tdf Line: 23
+Info (12128): Elaborating entity "decode_5la" for hierarchy "RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|decode_5la:decode2" File: C:/Users/socce/Downloads/CAR_uart/db/altsyncram_hiu1.tdf Line: 47
+Info (12021): Found 1 design units, including 1 entities, in source file db/decode_u0a.tdf
+    Info (12023): Found entity 1: decode_u0a File: C:/Users/socce/Downloads/CAR_uart/db/decode_u0a.tdf Line: 23
+Info (12128): Elaborating entity "decode_u0a" for hierarchy "RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|decode_u0a:rden_decode_b" File: C:/Users/socce/Downloads/CAR_uart/db/altsyncram_hiu1.tdf Line: 48
+Info (12021): Found 1 design units, including 1 entities, in source file db/mux_hfb.tdf
+    Info (12023): Found entity 1: mux_hfb File: C:/Users/socce/Downloads/CAR_uart/db/mux_hfb.tdf Line: 23
+Info (12128): Elaborating entity "mux_hfb" for hierarchy "RGB:vram_x|altsyncram:altsyncram_component|altsyncram_hiu1:auto_generated|mux_hfb:mux3" File: C:/Users/socce/Downloads/CAR_uart/db/altsyncram_hiu1.tdf Line: 50
+Warning (12125): Using design file camera.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: camera File: C:/Users/socce/Downloads/CAR_uart/camera.v Line: 8
+Info (12128): Elaborating entity "camera" for hierarchy "camera:camera_out" File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 302
+Warning (10036): Verilog HDL or VHDL warning at camera.v(59): object "tx_count" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/camera.v Line: 59
+Warning (10036): Verilog HDL or VHDL warning at camera.v(94): object "_net_33" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/camera.v Line: 94
+Warning (10034): Output port "reset" at camera.v(25) has no driver File: C:/Users/socce/Downloads/CAR_uart/camera.v Line: 25
+Warning (10034): Output port "pwdn" at camera.v(27) has no driver File: C:/Users/socce/Downloads/CAR_uart/camera.v Line: 27
+Warning (12125): Using design file vga.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: VGA File: C:/Users/socce/Downloads/CAR_uart/vga.v Line: 8
+Info (12128): Elaborating entity "VGA" for hierarchy "VGA:VGA_out" File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 304
+Warning (10036): Verilog HDL or VHDL warning at vga.v(38): object "i_hdisp" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/vga.v Line: 38
+Warning (10036): Verilog HDL or VHDL warning at vga.v(39): object "i_vdisp" assigned a value but never read File: C:/Users/socce/Downloads/CAR_uart/vga.v Line: 39
+Warning (10030): Net "encode.data_a" at vga.v(43) has no driver or initial value, using a default initial value '0' File: C:/Users/socce/Downloads/CAR_uart/vga.v Line: 43
+Warning (10030): Net "encode.waddr_a" at vga.v(43) has no driver or initial value, using a default initial value '0' File: C:/Users/socce/Downloads/CAR_uart/vga.v Line: 43
+Warning (10030): Net "encode.we_a" at vga.v(43) has no driver or initial value, using a default initial value '0' File: C:/Users/socce/Downloads/CAR_uart/vga.v Line: 43
+Warning (12125): Using design file uart.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: uart File: C:/Users/socce/Downloads/CAR_uart/uart.v Line: 8
+Info (12128): Elaborating entity "uart" for hierarchy "uart:send" File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 305
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "reset" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 39
+    Warning (13410): Pin "pwdn" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 41
+    Warning (13410): Pin "reset2" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 47
+    Warning (13410): Pin "pwdn2" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 49
+    Warning (13410): Pin "HEX0[0]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[1]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[2]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[3]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[4]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[5]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[6]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX0[7]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 65
+    Warning (13410): Pin "HEX1[0]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 67
+    Warning (13410): Pin "HEX1[2]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 67
+    Warning (13410): Pin "HEX1[3]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 67
+    Warning (13410): Pin "HEX1[5]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 67
+    Warning (13410): Pin "HEX1[7]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 67
+    Warning (13410): Pin "HEX2[0]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 69
+    Warning (13410): Pin "HEX2[1]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 69
+    Warning (13410): Pin "HEX2[2]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 69
+    Warning (13410): Pin "HEX2[3]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 69
+    Warning (13410): Pin "HEX2[7]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 69
+    Warning (13410): Pin "HEX3[0]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 71
+    Warning (13410): Pin "HEX3[3]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 71
+    Warning (13410): Pin "HEX3[4]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 71
+    Warning (13410): Pin "HEX3[5]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 71
+    Warning (13410): Pin "HEX3[6]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 71
+    Warning (13410): Pin "HEX3[7]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 71
+    Warning (13410): Pin "HEX4[0]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[1]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[2]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[3]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[4]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[5]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[6]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX4[7]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 73
+    Warning (13410): Pin "HEX5[0]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[1]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[2]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[3]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[4]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[5]" is stuck at GND File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[6]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+    Warning (13410): Pin "HEX5[7]" is stuck at VCC File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 75
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 13 registers lost all their fanouts during netlist optimizations.
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Warning (21074): Design contains 1 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "push_minus" File: C:/Users/socce/Downloads/CAR_uart/cam_test.v Line: 33
+Info (21057): Implemented 1168 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 26 input pins
+    Info (21059): Implemented 75 output pins
+    Info (21061): Implemented 1019 logic cells
+    Info (21064): Implemented 48 RAM segments
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 91 warnings
+    Info: Peak virtual memory: 4932 megabytes
+    Info: Processing ended: Sun Feb 16 20:37:39 2025
+    Info: Elapsed time: 00:00:06
+    Info: Total CPU time (on all processors): 00:00:11
+
+
