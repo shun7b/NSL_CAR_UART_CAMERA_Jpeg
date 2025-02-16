@@ -5,7 +5,7 @@ ov7670,NSL,DE0CV,UART,libjpeg,128*128pixel
 <br>gpio使う。
 <br>fs90rモーター
 <br>uartもgpiofpgaからPCに画像おくる。
-<br>wsl1
+<br>wsl1で受信c言語で行う。
 <br>
 
 
