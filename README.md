@@ -4,7 +4,8 @@ ov7670,NSL,DE0CV,UART,libjpeg,128*128pixel
 <br>Motorとカメラov7670の2つ使える。
 <br>gpio使う。
 <br>fs90rモーター
-<br>uartもgpio
+<br>uartもgpiofpgaからPCに画像おくる。
+<br>wsl1
 <br>
 
 
