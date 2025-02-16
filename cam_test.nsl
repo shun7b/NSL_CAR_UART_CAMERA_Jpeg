@@ -1,0 +1,192 @@
+%i "cam_test.inc"
+%i "VGA.inc"
+%i "camera.inc"
+%i "vram.inc"
+%i "motor.inc"
+module cam_test{
+	VGA VGA_out;
+    camera camera_out[2];
+   vram vram_x[6];
+    motor motor_x[2];
+    reg motor_light=1'b0;
+    reg motor_sw[4]=4'b0;
+    reg VGA_plot_num_x[32]=32'b0;
+    reg VGA_plot_num_y[32]=32'b0;
+    reg plot_num_x[32]=32'b0;
+    wire plot_num[32];
+    wire plot_nums[32];
+    reg plot_num_y[32]=32'b0;
+    reg wait_motor[10]=10'b0;
+    reg VGA_plot_num_x2[32]=32'b0;
+    reg VGA_plot_num_y2[32]=32'b0;
+    reg plot_num_x2[32]=32'b0;
+    wire plot_num2[32];
+    reg motor_enable=1'b0;
+    wire plot_nums2[32];
+    reg plot_num_y2[32]=32'b0;
+    reg count[32]=32'b0;
+    reg motor_state[3]=3'b0;
+    
+    reg motor_mode[3]=3'b0;
+    mem encode[16][8]={0b00111111,0b00000110,
+	0b01011011,0b01001111,
+	0b01100110,0b01101101,
+	0b01111101,0b00100111,
+	0b01111111,0b01101111,
+    0b01110111,0b01111100,
+	0b00111001,0b01011110,
+	0b01111001,0b01110001};
+    motor_x[0].push=push;
+    motor_x[1].push=push;
+    
+    motor_x[0].push_minus=push_minus;
+    motor_x[1].push_minus=push_minus;
+    VGA_VS=VGA_out.VGA_VS;
+    //HEX0=VGA_out.HEX0;
+    
+    //HEX1=~encode[motor_x[0].HEX];
+    
+    //HEX2=~encode[motor_x[1].HEX];
+    HEX0=~encode[motor_x[0].HEXpwm];
+    HEX1=~encode[motor_x[0].HEXpwm1];
+    HEX2=~encode[motor_x[0].HEXpwm2];
+    HEX3=~encode[motor_x[0].HEXpwm3];
+    HEX4=~encode[motor_x[0].HEXpwm4];
+    HEX5=~encode[motor_x[0].HEXpwm5];
+    VGA_HS=VGA_out.VGA_HS;
+   
+    xclk=camera_out[0].xclk;
+    sda=camera_out[0].sda;
+    scl=camera_out[0].scl;
+    pwdn=camera_out[0].pwdn;
+    camera_out[0].href=href;
+    camera_out[0].pclk=pclk;
+    reset=camera_out[0].reset;
+    camera_out[0].in_data=in_data;
+    camera_out[0].c_vsync=c_vsync;
+    plot_num_x:=32'(camera_out[0].out_plot_num_x);
+    plot_num_y:=(32'(camera_out[0].out_plot_num_y))<<7;
+    VGA_plot_num_x:=32'(VGA_out.plot_num_x);
+    VGA_plot_num_y:=(32'(VGA_out.plot_num_y))<<7;
+
+    xclk2=camera_out[1].xclk;
+sda2=camera_out[1].sda;
+scl2=camera_out[1].scl;
+pwdn2=camera_out[1].pwdn;
+camera_out[1].href=href2;
+camera_out[1].pclk=pclk2;
+reset2=camera_out[1].reset;
+camera_out[1].in_data=in_data2;
+camera_out[1].c_vsync=c_vsync2;
+
+plot_num_x2:=32'(camera_out[1].out_plot_num_x);
+plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
+    VGA_plot_num_x2:=32'(VGA_out.plot_num_x-128);
+    VGA_plot_num_y2:=(32'(VGA_out.plot_num_y-128))<<7;
+    if(camera_out[0].out_plot_num_x>=0&&camera_out[0].out_plot_num_x<128&&camera_out[0].out_plot_num_y>=0&&camera_out[0].out_plot_num_y<128){
+       plot_num=32'((32'(plot_num_x))+(32'((32'(plot_num_y)))));
+            vram_x[0].data=camera_out[0].VGA_B;
+            vram_x[0].wren=1'b1;
+            vram_x[0].wraddress=plot_num[13:0];
+
+       
+           vram_x[1].data=camera_out[0].VGA_G;
+            vram_x[2].data=camera_out[0].VGA_R;
+            vram_x[1].wren=1'b1;
+            vram_x[2].wren=1'b1;
+            vram_x[1].wraddress=plot_num[13:0];
+            vram_x[2].wraddress=plot_num[13:0];
+        
+    }
+
+    if(camera_out[1].out_plot_num_x>=0&&camera_out[1].out_plot_num_x<128&&camera_out[1].out_plot_num_y>=0&&camera_out[1].out_plot_num_y<128){
+       plot_num=32'((32'(plot_num_x2))+(32'((32'(plot_num_y2)))));
+            vram_x[3].data=camera_out[1].VGA_B;
+            vram_x[3].wren=1'b1;
+            vram_x[3].wraddress=plot_num[13:0];
+
+       
+           vram_x[4].data=camera_out[1].VGA_G;
+            vram_x[5].data=camera_out[1].VGA_R;
+            vram_x[4].wren=1'b1;
+            vram_x[5].wren=1'b1;
+            vram_x[4].wraddress=plot_num[13:0];
+            vram_x[5].wraddress=plot_num[13:0];
+        
+    }
+    if((VGA_out.plot_num_x-7)>=0&&(VGA_out.plot_num_x-7)<128&&(VGA_out.plot_num_y>=0)&&VGA_out.plot_num_y<128){
+        plot_nums=32'((32'(VGA_plot_num_x))+(32'((32'(VGA_plot_num_y)))));       
+        vram_x[0].rdaddress=plot_nums[13:0];
+        vram_x[1].rdaddress=plot_nums[13:0];
+        vram_x[2].rdaddress=plot_nums[13:0];
+        VGA_B=vram_x[0].q;
+        VGA_G=vram_x[1].q;
+        VGA_R=vram_x[2].q;
+        if((VGA_out.plot_num_x-7)==0&&VGA_out.plot_num_y>=0){
+            if(wait_motor==19){
+                wait_motor:=0;
+            }else{
+                wait_motor++;
+            }
+            motor_light:=~(((vram_x[0].q<4)&&(vram_x[1].q<4)&&(vram_x[2].q<4)));
+            motor_enable:=motor_light;
+        }else{
+            motor_light:=(~(((vram_x[0].q<4)&&(vram_x[1].q<4)&&(vram_x[2].q<4)))&motor_light);
+        }
+    }else if((VGA_out.plot_num_x-7)>=128&&(VGA_out.plot_num_x-7)<256&&(VGA_out.plot_num_y>=128)&&VGA_out.plot_num_y<256){
+        plot_nums=32'((32'(VGA_plot_num_x))+(32'((32'(VGA_plot_num_y)))));       
+        vram_x[3].rdaddress=plot_nums[13:0];
+        vram_x[4].rdaddress=plot_nums[13:0];
+        vram_x[5].rdaddress=plot_nums[13:0];
+        VGA_B=vram_x[3].q;
+        VGA_G=vram_x[4].q;
+        VGA_R=vram_x[5].q;
+        motor_light:=(~(((vram_x[3].q<4)&&(vram_x[4].q<4)&&(vram_x[5].q<4)))&motor_light);
+    }else{
+        VGA_R=0x0;
+        VGA_G=0x0;
+        VGA_B=0x0;
+    }
+    if(count==100000000){
+        count:=0;
+        motor_state++;
+    }else if(motor_enable){
+        count++;
+    }
+    if(motor_state[0]==0){
+        motor_mode:=MOTOR_STOP;
+    }else{
+        if(motor_state[1:0]==1){
+            motor_mode:=MOTOR_STRATE;
+        }
+        
+        if(motor_state==3){
+            motor_mode:=MOTOR_RIGHT;
+        }
+        
+        if(motor_state==7){
+            motor_mode:=MOTOR_LEFT;
+        }
+    }
+    if(motor_enable){
+        if(motor_mode==MOTOR_RIGHT){
+            motor_sw:=0b0101;
+        }else if(motor_mode==MOTOR_LEFT){
+            motor_sw:=0b1010;
+        }else if(motor_mode==MOTOR_STRATE){
+            motor_sw:=0b0110;
+        }else if(motor_mode==MOTOR_BACK){
+            motor_sw:=0b1001;
+        }else{
+            motor_sw:=0b0000;
+        }
+    }else{
+        motor_sw:=4'b0;
+    }
+    motor_x[0].sw=motor_sw[3:2];
+    motor_x[0].set_RL=1'b0;
+    motor_sig=motor_x[1].power;
+    motor_x[1].sw=motor_sw[1:0];
+    motor_x[1].set_RL=1'b1;
+    motor_sig2=motor_x[0].power;
+}

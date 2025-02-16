@@ -1,0 +1,84 @@
+#include"motor.inc"
+module motor{
+	reg count[31]=31'b0;
+	reg pwm=1'b0;
+	reg LED[4]=4'b0;
+	reg in_botan[31]=31'b0;
+	reg RL_diff[31]=31'b0;
+
+	power=pwm;
+	HEX=LED;
+	
+	HEXpwm=RL_diff[3:0];
+	HEXpwm1=RL_diff[7:4];
+	
+	HEXpwm2=RL_diff[11:8];
+	HEXpwm3=RL_diff[15:12];
+	
+	HEXpwm4=RL_diff[19:16];
+	
+	HEXpwm5=4'(RL_diff[30]);
+	/*
+	HEXpwm=in_botan[3:0];
+	HEXpwm1=in_botan[7:4];
+	
+	HEXpwm2=in_botan[11:8];
+	HEXpwm3=in_botan[15:12];
+	
+	HEXpwm4=in_botan[19:16];
+	
+	HEXpwm5=4'(in_botan[30]);
+	*/
+	if(count==FULL&&push==0){
+		//in_botan:=in_botan+128;
+		if(set_RL==0){
+			RL_diff:=50000;
+		}else{
+			RL_diff:=0;
+		}
+	}
+	if(count==FULL&&push_minus==0){
+		//in_botan:=in_botan-128;
+			/*
+		if(set_RL==0){
+			RL_diff:=RL_diff-128;
+		}else{
+			RL_diff:=0;
+		}*/
+	}
+	if(sw==1){
+		if(count<=(CCW+RL_diff)){
+			pwm:=0b1;
+		}
+		if(count<FULL&&count>(CCW+RL_diff)){
+			pwm:=0b0;
+		}
+		LED:=1;
+	}else if((sw==0)||(sw==3)){
+		if(count<=(31'(STOP)+in_botan)){
+			pwm:=0b1;
+		}
+		if(count<FULL&&count>(31'(STOP)+in_botan)){
+			pwm:=0b0;
+		}
+		if(sw==0){
+			LED:=0;
+		}else if(sw==3){
+			LED:=3;
+		}
+	}else if(sw==2){
+		if(count<=(CW-RL_diff)){
+			pwm:=0b1;
+		}
+		if(count<FULL&&count>(CW-RL_diff)){
+			pwm:=0b0;
+		}
+		LED:=2;
+	}
+		if(count==FULL){
+			count:=1;
+			
+		}else{
+			count++;
+		}
+}
