@@ -1,1 +1,1 @@
-NSL,DE0CV,UART,libjpeg,128*128pixel
+ov7670,NSL,DE0CV,UART,libjpeg,128*128pixel
