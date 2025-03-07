@@ -1,5 +1,5 @@
 
-/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sun Feb  2 15:42:07 2025
+/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sat Mar  8 00:35:09 2025
  Licensed to :EVALUATION USER*/
 /*
  DO NOT USE ANY PART OF THIS FILE FOR COMMERCIAL PRODUCTS. 
@@ -418,8 +418,8 @@ module camera ( p_reset , m_clock , in_data , href , pclk , xclk , c_vsync , sda
 // synopsys translate_on
 ;
    assign  xclk = clk;
-   assign  sda = ((((((((((((count==10'b0000011001)&(I2C_START_STOP==10'b0000000001))|((count==10'b0000010000)&(I2C_START_STOP==10'b0000000000)))|((count==10'b0000011000)&(I2C_START_STOP==10'b0000001000)))|((start_count < 32'b00000000000000000000000000000101)&(pc==10'b0000000000)))|((start_count < 32'b00000000000000001110100100110010)&(pc != 10'b0000000000)))|(count==10'b0000011010))|(sda_reg&(count != 10'b0000011001)))|(I2C_START_STOP==10'b0000001000))|((((I2C_START_STOP==10'b0000000001)&(scl_clk < 16'b0000000000001010))&sda_reg)&(pc==10'b0000000000))))==0)?1'b0:1'bz;
-   assign  scl = ((((((((((count==10'b0000011001)&(I2C_START_STOP==10'b0000000001))|scl_reg)|((start_count < 32'b00000000000000000000000011001111)&(pc==10'b0000000000)))|((start_count < 32'b00000000000000001110100111111100)&(pc != 10'b0000000000)))|(pc==10'b0010100000))|(count==10'b0000011010))|((count==10'b0000011001)&(I2C_START_STOP==10'b0000001000))))==0)?1'b0:1'bz;
+   assign  sda = (((((((((((count==10'b0000011001)&(I2C_START_STOP==10'b0000000001))|((count==10'b0000010000)&(I2C_START_STOP==10'b0000000000)))|((count==10'b0000011000)&(I2C_START_STOP==10'b0000001000)))|((start_count < 32'b00000000000000000000000000000101)&(pc==10'b0000000000)))|((start_count < 32'b00000000000000001110100100110010)&(pc != 10'b0000000000)))|(count==10'b0000011010))|(sda_reg&(count != 10'b0000011001)))|(I2C_START_STOP==10'b0000001000))|((((I2C_START_STOP==10'b0000000001)&(scl_clk < 16'b0000000000001010))&sda_reg)&(pc==10'b0000000000)))==1'b0)?1'b0:1'bz;
+   assign  scl = (((((((((count==10'b0000011001)&(I2C_START_STOP==10'b0000000001))|scl_reg)|((start_count < 32'b00000000000000000000000011001111)&(pc==10'b0000000000)))|((start_count < 32'b00000000000000001110100111111100)&(pc != 10'b0000000000)))|(pc==10'b0010100000))|(count==10'b0000011010))|((count==10'b0000011001)&(I2C_START_STOP==10'b0000001000)))==1'b0)?1'b0:1'bz;
    assign  VGA_R = arg_r;
    assign  VGA_B = arg_b;
    assign  VGA_G = arg_g;
@@ -1122,5 +1122,5 @@ if ((((_net_14&(~_net_15))|(_net_14&_net_15))==1'b1) ||
 // synopsys translate_on
 endmodule
 
-/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sun Feb  2 15:42:07 2025
+/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sat Mar  8 00:35:09 2025
  Licensed to :EVALUATION USER*/

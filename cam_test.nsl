@@ -12,8 +12,8 @@ module cam_test{
     
     motor motor_x[2];
     reg uart_time[2]=2'b0;
-    reg rgb=1'b0;
-    reg count_uart[32]=32'b0;
+    reg wait_uart[12]=12'b0;
+    reg clk25=1'b0;
     reg rgb_num[32]=32'b0;
     reg uart_data[8]=8'b0;
     reg uart_data2[8]=8'b0;
@@ -23,21 +23,22 @@ module cam_test{
     reg VGA_plot_num_x[32]=32'b0;
     reg VGA_plot_num_y[32]=32'b0;
     reg plot_num_x[32]=32'b0;
-    wire plot_num[32];
-    wire plot_nums[32];
+    reg plot_num[32]=32'b0;
+    reg plot_nums[32]=32'b0;
     reg plot_num_y[32]=32'b0;
     reg wait_motor[10]=10'b0;
-    reg VGA_plot_num_x2[32]=32'b0;
-    reg VGA_plot_num_y2[32]=32'b0;
+
     reg plot_num_x2[32]=32'b0;
-    wire plot_num2[32];
+    
     reg motor_enable=1'b0;
-    wire plot_nums2[32];
+
     reg plot_num_y2[32]=32'b0;
     reg count[32]=32'b0;
     reg motor_state[3]=3'b0;
     reg uart_data_in[8]=8'b0;
     reg motor_mode[3]=3'b0;
+ 
+    reg end_sw=1'b0;
     mem encode[16][8]={0b00111111,0b00000110,
 	0b01011011,0b01001111,
 	0b01100110,0b01101101,
@@ -64,6 +65,7 @@ module cam_test{
     HEX4=~encode[motor_x[0].HEXpwm4];
     HEX5=~encode[motor_x[0].HEXpwm5];
     VGA_HS=VGA_out.VGA_HS;
+    
    
     xclk=camera_out[0].xclk;
     sda=camera_out[0].sda;
@@ -74,10 +76,8 @@ module cam_test{
     reset=camera_out[0].reset;
     camera_out[0].in_data=in_data;
     camera_out[0].c_vsync=c_vsync;
-    plot_num_x:=32'(camera_out[0].out_plot_num_x);
-    plot_num_y:=(32'(camera_out[0].out_plot_num_y))<<7;
-    VGA_plot_num_x:=32'(VGA_out.plot_num_x);
-    VGA_plot_num_y:=(32'(VGA_out.plot_num_y))<<7;
+    
+    
 
     xclk2=camera_out[1].xclk;
 sda2=camera_out[1].sda;
@@ -89,12 +89,18 @@ reset2=camera_out[1].reset;
 camera_out[1].in_data=in_data2;
 camera_out[1].c_vsync=c_vsync2;
 
-plot_num_x2:=32'(camera_out[1].out_plot_num_x);
-plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
-    VGA_plot_num_x2:=32'(VGA_out.plot_num_x-128);
-    VGA_plot_num_y2:=(32'(VGA_out.plot_num_y-128))<<7;
+
+  
+   if(~sw_send){
+        VGA_plot_num_x:=32'(VGA_out.plot_num_x-7);
+    VGA_plot_num_y:=(32'(VGA_out.plot_num_y))<<7;
+  
+        plot_num_x2:=32'(camera_out[1].out_plot_num_x);
+        plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
+        plot_num_x:=32'(camera_out[0].out_plot_num_x);
+        plot_num_y:=(32'(camera_out[0].out_plot_num_y))<<7;
     if(camera_out[0].out_plot_num_x>=0&&camera_out[0].out_plot_num_x<128&&camera_out[0].out_plot_num_y>=0&&camera_out[0].out_plot_num_y<128){
-       plot_num=32'((32'(plot_num_x))+(32'((32'(plot_num_y)))));
+       plot_num:=32'((32'(plot_num_x))+(32'((32'(plot_num_y)))));
             vram_x[0].data=camera_out[0].VGA_B;
             vram_x[0].wren=1'b1;
             vram_x[0].wraddress=plot_num[13:0];
@@ -107,10 +113,14 @@ plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
             vram_x[1].wraddress=plot_num[13:0];
             vram_x[2].wraddress=plot_num[13:0];
         
+    }else{
+        vram_x[0].wren=1'b0;
+        vram_x[1].wren=1'b0;
+        vram_x[2].wren=1'b0;
     }
 
     if(camera_out[1].out_plot_num_x>=0&&camera_out[1].out_plot_num_x<128&&camera_out[1].out_plot_num_y>=0&&camera_out[1].out_plot_num_y<128){
-       plot_num=32'((32'(plot_num_x2))+(32'((32'(plot_num_y2)))));
+       plot_num:=32'((32'(plot_num_x2))+(32'((32'(plot_num_y2)))));
             vram_x[3].data=camera_out[1].VGA_B;
             vram_x[3].wren=1'b1;
             vram_x[3].wraddress=plot_num[13:0];
@@ -123,9 +133,22 @@ plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
             vram_x[4].wraddress=plot_num[13:0];
             vram_x[5].wraddress=plot_num[13:0];
         
+    }else{
+        vram_x[3].wren=1'b0;
+        vram_x[4].wren=1'b0;
+        vram_x[5].wren=1'b0;
     }
+   }else{
+        vram_x[0].wren=1'b0;
+        vram_x[1].wren=1'b0;
+        vram_x[2].wren=1'b0;
+        vram_x[3].wren=1'b0;
+        vram_x[4].wren=1'b0;
+        vram_x[5].wren=1'b0;
+    } 
+    if(~sw_send){
     if((VGA_out.plot_num_x-7)>=0&&(VGA_out.plot_num_x-7)<128&&(VGA_out.plot_num_y>=0)&&VGA_out.plot_num_y<128){
-        plot_nums=32'((32'(VGA_plot_num_x))+(32'((32'(VGA_plot_num_y)))));       
+        plot_nums:=32'((32'(VGA_plot_num_x))+(32'((32'(VGA_plot_num_y)))));       
         vram_x[0].rdaddress=plot_nums[13:0];
         vram_x[1].rdaddress=plot_nums[13:0];
         vram_x[2].rdaddress=plot_nums[13:0];
@@ -145,7 +168,7 @@ plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
             motor_light:=(~(((vram_x[0].q<4)&&(vram_x[1].q<4)&&(vram_x[2].q<4)))&motor_light);
         }
     }else if((VGA_out.plot_num_x-7)>=128&&(VGA_out.plot_num_x-7)<256&&(VGA_out.plot_num_y>=128)&&VGA_out.plot_num_y<256){
-        plot_nums=32'((32'(VGA_plot_num_x))+(32'((32'(VGA_plot_num_y)))));       
+        plot_nums:=32'((32'(VGA_plot_num_x))+(32'((32'(VGA_plot_num_y)))));       
         vram_x[3].rdaddress=plot_nums[13:0];
         vram_x[4].rdaddress=plot_nums[13:0];
         vram_x[5].rdaddress=plot_nums[13:0];
@@ -153,6 +176,11 @@ plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
         VGA_G=vram_x[4].q;
         VGA_R=vram_x[5].q;
         motor_light:=(~(((vram_x[3].q<4)&&(vram_x[4].q<4)&&(vram_x[5].q<4)))&motor_light);
+    }else{
+        VGA_R=0x0;
+        VGA_G=0x0;
+        VGA_B=0x0;
+    }
     }else{
         VGA_R=0x0;
         VGA_G=0x0;
@@ -200,51 +228,74 @@ plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
     motor_x[1].sw=motor_sw[1:0];
     motor_x[1].set_RL=1'b1;
     motor_sig2=motor_x[0].power;
-    if(count_uart==32'd2000){
-        count_uart:=32'b0;
-    
-     if(rgb_num==32'd24576){
-        rgb_num:=32'b0;
-    }else{
-        rgb_num++;
+    if(sw_send&&~end_sw){
+                    vram_x[0].rdaddress=rgb_num[13:0];
+                    vram_x[1].rdaddress=rgb_num[13:0];
+                    vram_x[2].rdaddress=rgb_num[13:0];
+        if(wait_uart>12'd2000){
+                if(rgb_num>32'd16383&&rgb_num<32'd30000000){
+                    rgb_num:=32'd3000000;
+                     end_sw:=0b1;
+                }else{
+                     send.Tx_Start_i();
+                    if(uart_time==2){
+               
+                        uart_data_in:=uart_data3;
+               
+
+                    }
+                    if(uart_time==3){
+               
+                        uart_data_in:=0xf9;
+              
+
+                        rgb_num++;
+                    }
+
+                    if(uart_time==0){
+                   
+                        uart_data_in:={vram_x[2].q,vram_x[1].q};
+               
+
+                    
+                        uart_data2:={vram_x[0].q,4'b0000};
+                         rgb_num++;
+                    }      
+                    if(uart_time==1){
+                 
+                       uart_data_in:={uart_data2[7:4],(vram_x[2].q)};
+                      /*  vram_x[0].rdaddress=rgb_num[13:0];
+                    vram_x[1].rdaddress=rgb_num[13:0];
+                    vram_x[2].rdaddress=rgb_num[13:0];
+                        
+                   */
+                        uart_data3:={vram_x[1].q,vram_x[0].q};
+                    
+                        
+                    }
+                        
+                     uart_time++;
+                }
+                 
+                wait_uart:=12'b0;
+           
+        }else{
+            wait_uart++;
+        }
+        
     }
-     if(uart_time==2){
+    if(~sw_send){
+        
+        end_sw:=0b0;
+        uart_data:=8'b0;
+        uart_data2:=8'b0;
+        uart_data3:=8'b0;
         uart_time:=2'b0;
-     }else{
-        uart_time++;
-     }
-    if(uart_time==0){
-        send.Tx_Start_i();
-       uart_data_in:=uart_data;
+        rgb_num:=32'b0;
+        wait_uart:=12'b0;
+       
     }
-    if(uart_time==1){
-        send.Tx_Start_i();
-       uart_data_in:=uart_data2;
-     
-    }
-     if(uart_time==2){
-        send.Tx_Start_i();
-        uart_data_in:=uart_data3;
-    }
-    rgb:=~rgb;
-         if(rgb==0){
-            
-        vram_x[0].rdaddress=rgb_num[13:0];
-        vram_x[1].rdaddress=rgb_num[13:0];
-        vram_x[2].rdaddress=rgb_num[13:0];
-            uart_data:={vram_x[2].q,vram_x[1].q};
-            uart_data2:={vram_x[0].q,4'b0000};
-        }
-        if(rgb==1){
-          vram_x[0].rdaddress=rgb_num[13:0];
-        vram_x[1].rdaddress=rgb_num[13:0];
-        vram_x[2].rdaddress=rgb_num[13:0];
-            uart_data3:={vram_x[1].q,vram_x[0].q};
-            uart_data2:=uart_data2|8'(vram_x[2].q);
-        }
-    }else{
-        count_uart++;
-    }   
+    clk25:=clk25;
     send.Freq_Divide_Param_i=0x0000;
      send.Tx_BitLength_i=0b11;
      send.Tx_ParityEN_i =0b0;
@@ -253,3 +304,11 @@ plot_num_y2:=(32'(camera_out[1].out_plot_num_y))<<7;
      send.Tx_OddParity_i=1'b0; 
      txd=send.TxD_o;
 }
+/*
+RGB vram_x ( .data(_vram_x_data),.inclock(pclk),.outclock(m_clock), .rdaddress(_vram_x_rdaddress), .wraddress(_vram_x_wraddress), .wren(_vram_x_wren), .q(_vram_x_q));
+RGB vram_x_2 ( .data(_vram_x_2_data),.inclock(pclk),.outclock(m_clock), .rdaddress(_vram_x_2_rdaddress), .wraddress(_vram_x_2_wraddress), .wren(_vram_x_2_wren), .q(_vram_x_2_q));
+RGB vram_x_1 ( .data(_vram_x_1_data),.inclock(pclk),.outclock(m_clock), .rdaddress(_vram_x_1_rdaddress), .wraddress(_vram_x_1_wraddress), .wren(_vram_x_1_wren), .q(_vram_x_1_q));
+RGB vram_x_3 ( .data(_vram_x_3_data),.inclock(pclk2),.outclock(m_clock), .rdaddress(_vram_x_3_rdaddress), .wraddress(_vram_x_3_wraddress), .wren(_vram_x_3_wren), .q(_vram_x_3_q));
+RGB vram_x_5 ( .data(_vram_x_5_data),.inclock(pclk2),.outclock(m_clock), .rdaddress(_vram_x_5_rdaddress), .wraddress(_vram_x_5_wraddress), .wren(_vram_x_5_wren), .q(_vram_x_5_q));
+RGB vram_x_4 ( .data(_vram_x_4_data),.inclock(pclk2),.outclock(m_clock), .rdaddress(_vram_x_4_rdaddress), .wraddress(_vram_x_4_wraddress), .wren(_vram_x_4_wren), .q(_vram_x_4_q));
+*/

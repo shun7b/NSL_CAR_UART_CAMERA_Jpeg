@@ -1,11 +1,11 @@
 
-/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sun Feb 16 20:37:11 2025
+/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sat Mar  8 06:10:38 2025
  Licensed to :EVALUATION USER*/
 /*
  DO NOT USE ANY PART OF THIS FILE FOR COMMERCIAL PRODUCTS. 
 */
 
-module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk , pclk2 , xclk , xclk2 , c_vsync , c_vsync2 , push , push_minus , sda , scl , reset , pwdn , sda2 , scl2 , reset2 , pwdn2 , motor_sig , motor_sig2 , VGA_R , VGA_B , VGA_G , VGA_VS , VGA_HS , HEX0 , HEX1 , HEX2 , HEX3 , HEX4 , HEX5 , txd );
+module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk , pclk2 , xclk , xclk2 , c_vsync , c_vsync2 , push , push_minus , sw_send , sda , scl , reset , pwdn , sda2 , scl2 , reset2 , pwdn2 , motor_sig , motor_sig2 , VGA_R , VGA_B , VGA_G , VGA_VS , VGA_HS , HEX0 , HEX1 , HEX2 , HEX3 , HEX4 , HEX5 , txd );
   input p_reset, m_clock;
   wire p_reset, m_clock;
   input [7:0] in_data;
@@ -32,6 +32,8 @@ module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk ,
   wire push;
   input push_minus;
   wire push_minus;
+  input sw_send;
+  wire sw_send;
   output sda;
   wire sda;
   output scl;
@@ -77,8 +79,8 @@ module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk ,
   output txd;
   wire txd;
   reg [1:0] uart_time;
-  reg rgb;
-  reg [31:0] count_uart;
+  reg [11:0] wait_uart;
+  reg clk25;
   reg [31:0] rgb_num;
   reg [7:0] uart_data;
   reg [7:0] uart_data2;
@@ -88,21 +90,18 @@ module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk ,
   reg [31:0] VGA_plot_num_x;
   reg [31:0] VGA_plot_num_y;
   reg [31:0] plot_num_x;
-  wire [31:0] plot_num;
-  wire [31:0] plot_nums;
+  reg [31:0] plot_num;
+  reg [31:0] plot_nums;
   reg [31:0] plot_num_y;
   reg [9:0] wait_motor;
-  reg [31:0] VGA_plot_num_x2;
-  reg [31:0] VGA_plot_num_y2;
   reg [31:0] plot_num_x2;
-  wire [31:0] plot_num2;
   reg motor_enable;
-  wire [31:0] plot_nums2;
   reg [31:0] plot_num_y2;
   reg [31:0] count;
   reg [2:0] motor_state;
   reg [7:0] uart_data_in;
   reg [2:0] motor_mode;
+  reg end_sw;
   reg [7:0] encode [0:15];
   wire [7:0] _send_Tx_Data_i;
   wire _send_TxD_o;
@@ -238,40 +237,40 @@ module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk ,
   wire [7:0] _net_3;
   wire [7:0] _net_4;
   wire [7:0] _net_5;
-  wire [9:0] _net_6;
+  wire _net_6;
   wire [9:0] _net_7;
-  wire [63:0] _net_8;
-  wire [9:0] _net_9;
+  wire [9:0] _net_8;
+  wire [63:0] _net_9;
   wire [9:0] _net_10;
-  wire [63:0] _net_11;
-  wire [9:0] _net_12;
+  wire [9:0] _net_11;
+  wire [63:0] _net_12;
   wire [9:0] _net_13;
-  wire [63:0] _net_14;
-  wire [9:0] _net_15;
-  wire [9:0] _net_16;
-  wire [63:0] _net_17;
-  wire _net_18;
+  wire [9:0] _net_14;
+  wire [63:0] _net_15;
+  wire _net_16;
+  wire [31:0] _net_17;
+  wire [31:0] _net_18;
   wire [31:0] _net_19;
   wire [31:0] _net_20;
-  wire [31:0] _net_21;
+  wire _net_21;
   wire [31:0] _net_22;
-  wire _net_23;
+  wire [31:0] _net_23;
   wire [31:0] _net_24;
   wire [31:0] _net_25;
-  wire [31:0] _net_26;
-  wire [31:0] _net_27;
-  wire _net_28;
+  wire _net_26;
+  wire _net_27;
+  wire [31:0] _net_28;
   wire [31:0] _net_29;
   wire [31:0] _net_30;
   wire [31:0] _net_31;
-  wire [31:0] _net_32;
+  wire _net_32;
   wire _net_33;
   wire _net_34;
-  wire _net_35;
+  wire [31:0] _net_35;
   wire [31:0] _net_36;
   wire [31:0] _net_37;
   wire [31:0] _net_38;
-  wire [31:0] _net_39;
+  wire _net_39;
   wire _net_40;
   wire _net_41;
   wire _net_42;
@@ -288,14 +287,12 @@ module cam_test ( p_reset , m_clock , in_data , in_data2 , href , href2 , pclk ,
   wire _net_53;
   wire _net_54;
   wire _net_55;
-  wire _net_56;
-  wire [3:0] _net_57;
 motor motor_x (.m_clock(m_clock), .p_reset( p_reset), .sw(_motor_x_sw), .push(_motor_x_push), .push_minus(_motor_x_push_minus), .set_RL(_motor_x_set_RL), .power(_motor_x_power), .HEX(_motor_x_HEX), .HEXpwm(_motor_x_HEXpwm), .HEXpwm1(_motor_x_HEXpwm1), .HEXpwm2(_motor_x_HEXpwm2), .HEXpwm3(_motor_x_HEXpwm3), .HEXpwm4(_motor_x_HEXpwm4), .HEXpwm5(_motor_x_HEXpwm5));
 motor motor_x_1 (.m_clock(m_clock), .p_reset( p_reset), .sw(_motor_x_1_sw), .push(_motor_x_1_push), .push_minus(_motor_x_1_push_minus), .set_RL(_motor_x_1_set_RL), .power(_motor_x_1_power), .HEX(_motor_x_1_HEX), .HEXpwm(_motor_x_1_HEXpwm), .HEXpwm1(_motor_x_1_HEXpwm1), .HEXpwm2(_motor_x_1_HEXpwm2), .HEXpwm3(_motor_x_1_HEXpwm3), .HEXpwm4(_motor_x_1_HEXpwm4), .HEXpwm5(_motor_x_1_HEXpwm5));
+
 RGB vram_x ( .data(_vram_x_data),.inclock(pclk),.outclock(m_clock), .rdaddress(_vram_x_rdaddress), .wraddress(_vram_x_wraddress), .wren(_vram_x_wren), .q(_vram_x_q));
 RGB vram_x_2 ( .data(_vram_x_2_data),.inclock(pclk),.outclock(m_clock), .rdaddress(_vram_x_2_rdaddress), .wraddress(_vram_x_2_wraddress), .wren(_vram_x_2_wren), .q(_vram_x_2_q));
 RGB vram_x_1 ( .data(_vram_x_1_data),.inclock(pclk),.outclock(m_clock), .rdaddress(_vram_x_1_rdaddress), .wraddress(_vram_x_1_wraddress), .wren(_vram_x_1_wren), .q(_vram_x_1_q));
-
 RGB vram_x_3 ( .data(_vram_x_3_data),.inclock(pclk2),.outclock(m_clock), .rdaddress(_vram_x_3_rdaddress), .wraddress(_vram_x_3_wraddress), .wren(_vram_x_3_wren), .q(_vram_x_3_q));
 RGB vram_x_5 ( .data(_vram_x_5_data),.inclock(pclk2),.outclock(m_clock), .rdaddress(_vram_x_5_rdaddress), .wraddress(_vram_x_5_wraddress), .wren(_vram_x_5_wren), .q(_vram_x_5_q));
 RGB vram_x_4 ( .data(_vram_x_4_data),.inclock(pclk2),.outclock(m_clock), .rdaddress(_vram_x_4_rdaddress), .wraddress(_vram_x_4_wraddress), .wren(_vram_x_4_wren), .q(_vram_x_4_q));
@@ -304,62 +301,6 @@ camera camera_out_1 (.m_clock(m_clock), .p_reset( p_reset), .out_plot_num_y(_cam
 VGA VGA_out (.m_clock(m_clock), .p_reset( p_reset), .VGA_RI(_VGA_out_VGA_RI), .VGA_R(_VGA_out_VGA_R), .VGA_B(_VGA_out_VGA_B), .VGA_G(_VGA_out_VGA_G), .VGA_VS(_VGA_out_VGA_VS), .VGA_HS(_VGA_out_VGA_HS), .HEX0(_VGA_out_HEX0), .plot_num_x(_VGA_out_plot_num_x), .plot_num_y(_VGA_out_plot_num_y));
 uart send (.m_clock(m_clock), .p_reset( p_reset), .Tx_Finish_o(_send_Tx_Finish_o), .Tx_Start_i(_send_Tx_Start_i), .Tx_ShiftClock_o(_send_Tx_ShiftClock_o), .Tx_Ready_o(_send_Tx_Ready_o), .Tx_Enable_i(_send_Tx_Enable_i), .Tx_OddParity_i(_send_Tx_OddParity_i), .Tx_ParityEN_i(_send_Tx_ParityEN_i), .Tx_BitLength_i(_send_Tx_BitLength_i), .Freq_Divide_Param_i(_send_Freq_Divide_Param_i), .TxD_o(_send_TxD_o), .Tx_Data_i(_send_Tx_Data_i));
 
-
-// synthesis translate_off
-// synopsys translate_off
-always @(posedge m_clock or negedge p_reset)
-  begin
-if ((_net_23&_net_18))
- begin $display("Warning: assign collision(cam_test:plot_num) at %d",$time);
-if (_net_23) $display("assert (_net_23) line 113 at %d\n",$time);
-if (_net_18) $display("assert (_net_18) line 97 at %d\n",$time);
- end
- end
-
-// synthesis translate_on
-// synopsys translate_on
-   assign  plot_num = 
-// synthesis translate_off
-// synopsys translate_off
-((_net_23&_net_18))? 32'bx :((_net_23|_net_18))? 
-// synthesis translate_on
-// synopsys translate_on
-((_net_23)?_net_27:32'b0)|
-    ((_net_18)?_net_22:32'b0)
-// synthesis translate_off
-// synopsys translate_off
-:32'bx
-// synthesis translate_on
-// synopsys translate_on
-;
-
-// synthesis translate_off
-// synopsys translate_off
-always @(posedge m_clock or negedge p_reset)
-  begin
-if ((((~_net_28)&_net_35)&_net_28))
- begin $display("Warning: assign collision(cam_test:plot_nums) at %d",$time);
-if (((~_net_28)&_net_35)) $display("assert (((~_net_28)&_net_35)) line 148 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 128 at %d\n",$time);
- end
- end
-
-// synthesis translate_on
-// synopsys translate_on
-   assign  plot_nums = 
-// synthesis translate_off
-// synopsys translate_off
-((((~_net_28)&_net_35)&_net_28))? 32'bx :((((~_net_28)&_net_35)|_net_28))? 
-// synthesis translate_on
-// synopsys translate_on
-((((~_net_28)&_net_35))?_net_39:32'b0)|
-    ((_net_28)?_net_32:32'b0)
-// synthesis translate_off
-// synopsys translate_off
-:32'bx
-// synthesis translate_on
-// synopsys translate_on
-;
    assign  _send_Tx_Data_i = uart_data_in;
    assign  _send_Freq_Divide_Param_i = 16'b0000000000000000;
    assign  _send_Tx_BitLength_i = 2'b11;
@@ -375,16 +316,12 @@ always @(posedge _send_Tx_Start_i)
  begin
 $display("Warning: control hazard(cam_test:_send_Tx_Start_i) at %d",$time);
  end
-#1 if ((((_net_49&_net_54))===1'bx) || (1'b1)===1'bx) $display("hazard ((_net_49&_net_54) || 1'b1) line 226 at %d\n",$time);
-#1 if ((((_net_49&_net_53))===1'bx) || (1'b1)===1'bx) $display("hazard ((_net_49&_net_53) || 1'b1) line 221 at %d\n",$time);
-#1 if ((((_net_49&_net_52))===1'bx) || (1'b1)===1'bx) $display("hazard ((_net_49&_net_52) || 1'b1) line 217 at %d\n",$time);
+#1 if (((((_net_48&_net_49)&(~_net_50)))===1'bx) || (1'b1)===1'bx) $display("hazard (((_net_48&_net_49)&(~_net_50)) || 1'b1) line 240 at %d\n",$time);
  end
 
 // synthesis translate_on
 // synopsys translate_on
-   assign  _send_Tx_Start_i = (_net_49&_net_54)|
-    (_net_49&_net_53)|
-    (_net_49&_net_52);
+   assign  _send_Tx_Start_i = ((_net_48&_net_49)&(~_net_50));
    assign  _send_p_reset = p_reset;
    assign  _send_m_clock = m_clock;
    assign  _VGA_out_p_reset = p_reset;
@@ -404,10 +341,10 @@ $display("Warning: control hazard(cam_test:_send_Tx_Start_i) at %d",$time);
    assign  _vram_x_data = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((_net_6&_net_16))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_18)?_camera_out_VGA_B:4'b0)
+(((_net_6&_net_16))?_camera_out_VGA_B:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -419,11 +356,10 @@ $display("Warning: control hazard(cam_test:_send_Tx_Start_i) at %d",$time);
 // synopsys translate_off
 always @(posedge m_clock or negedge p_reset)
   begin
-if ((((_net_49&_net_56)&(_net_49&_net_55))|(((_net_49&_net_56)|(_net_49&_net_55))&_net_28)))
+if ((_net_48&(_net_26&_net_27)))
  begin $display("Warning: assign collision(cam_test:_vram_x_rdaddress) at %d",$time);
-if ((_net_49&_net_56)) $display("assert ((_net_49&_net_56)) line 239 at %d\n",$time);
-if ((_net_49&_net_55)) $display("assert ((_net_49&_net_55)) line 232 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 129 at %d\n",$time);
+if (_net_48) $display("assert (_net_48) line 232 at %d\n",$time);
+if ((_net_26&_net_27)) $display("assert ((_net_26&_net_27)) line 152 at %d\n",$time);
  end
  end
 
@@ -432,12 +368,11 @@ if (_net_28) $display("assert (_net_28) line 129 at %d\n",$time);
    assign  _vram_x_rdaddress = 
 // synthesis translate_off
 // synopsys translate_off
-((((_net_49&_net_56)&(_net_49&_net_55))|(((_net_49&_net_56)|(_net_49&_net_55))&_net_28)))? 14'bx :((((_net_49&_net_56)|(_net_49&_net_55))|_net_28))? 
+((_net_48&(_net_26&_net_27)))? 14'bx :((_net_48|(_net_26&_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-(((_net_49&_net_56))?(rgb_num[13:0]):14'b0)|
-    (((_net_49&_net_55))?(rgb_num[13:0]):14'b0)|
-    ((_net_28)?(plot_nums[13:0]):14'b0)
+((_net_48)?(rgb_num[13:0]):14'b0)|
+    (((_net_26&_net_27))?(plot_nums[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
@@ -447,23 +382,40 @@ if (_net_28) $display("assert (_net_28) line 129 at %d\n",$time);
    assign  _vram_x_wraddress = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((_net_6&_net_16))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_18)?(plot_num[13:0]):14'b0)
+(((_net_6&_net_16))?(plot_num[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock or negedge p_reset)
+  begin
+if ((((~_net_6)&(_net_6&(~_net_16)))|(((~_net_6)|(_net_6&(~_net_16)))&(_net_6&_net_16))))
+ begin $display("Warning: assign collision(cam_test:_vram_x_wren) at %d",$time);
+if ((~_net_6)) $display("assert ((~_net_6)) line 142 at %d\n",$time);
+if ((_net_6&(~_net_16))) $display("assert ((_net_6&(~_net_16))) line 117 at %d\n",$time);
+if ((_net_6&_net_16)) $display("assert ((_net_6&_net_16)) line 105 at %d\n",$time);
+ end
+ end
+
+// synthesis translate_on
+// synopsys translate_on
    assign  _vram_x_wren = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((((~_net_6)&(_net_6&(~_net_16)))|(((~_net_6)|(_net_6&(~_net_16)))&(_net_6&_net_16))))? 1'bx :((((~_net_6)|(_net_6&(~_net_16)))|(_net_6&_net_16)))? 
 // synthesis translate_on
 // synopsys translate_on
-_net_18
+(((~_net_6))?1'b0:1'b0)|
+    (((_net_6&(~_net_16)))?1'b0:1'b0)|
+    (((_net_6&_net_16))?1'b1:1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -475,10 +427,10 @@ _net_18
    assign  _vram_x_5_data = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((_net_6&_net_21))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_23)?_camera_out_1_VGA_R:4'b0)
+(((_net_6&_net_21))?_camera_out_1_VGA_R:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -488,10 +440,10 @@ _net_18
    assign  _vram_x_5_rdaddress = 
 // synthesis translate_off
 // synopsys translate_off
-(((~_net_28)&_net_35))? 
+(((_net_26&(~_net_27))&_net_34))? 
 // synthesis translate_on
 // synopsys translate_on
-((((~_net_28)&_net_35))?(plot_nums[13:0]):14'b0)
+((((_net_26&(~_net_27))&_net_34))?(plot_nums[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
@@ -501,23 +453,40 @@ _net_18
    assign  _vram_x_5_wraddress = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((_net_6&_net_21))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_23)?(plot_num[13:0]):14'b0)
+(((_net_6&_net_21))?(plot_num[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock or negedge p_reset)
+  begin
+if ((((~_net_6)&(_net_6&(~_net_21)))|(((~_net_6)|(_net_6&(~_net_21)))&(_net_6&_net_21))))
+ begin $display("Warning: assign collision(cam_test:_vram_x_5_wren) at %d",$time);
+if ((~_net_6)) $display("assert ((~_net_6)) line 147 at %d\n",$time);
+if ((_net_6&(~_net_21))) $display("assert ((_net_6&(~_net_21))) line 139 at %d\n",$time);
+if ((_net_6&_net_21)) $display("assert ((_net_6&_net_21)) line 132 at %d\n",$time);
+ end
+ end
+
+// synthesis translate_on
+// synopsys translate_on
    assign  _vram_x_5_wren = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((((~_net_6)&(_net_6&(~_net_21)))|(((~_net_6)|(_net_6&(~_net_21)))&(_net_6&_net_21))))? 1'bx :((((~_net_6)|(_net_6&(~_net_21)))|(_net_6&_net_21)))? 
 // synthesis translate_on
 // synopsys translate_on
-_net_23
+(((~_net_6))?1'b0:1'b0)|
+    (((_net_6&(~_net_21)))?1'b0:1'b0)|
+    (((_net_6&_net_21))?1'b1:1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -529,10 +498,10 @@ _net_23
    assign  _vram_x_4_data = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((_net_6&_net_21))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_23)?_camera_out_1_VGA_G:4'b0)
+(((_net_6&_net_21))?_camera_out_1_VGA_G:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -542,10 +511,10 @@ _net_23
    assign  _vram_x_4_rdaddress = 
 // synthesis translate_off
 // synopsys translate_off
-(((~_net_28)&_net_35))? 
+(((_net_26&(~_net_27))&_net_34))? 
 // synthesis translate_on
 // synopsys translate_on
-((((~_net_28)&_net_35))?(plot_nums[13:0]):14'b0)
+((((_net_26&(~_net_27))&_net_34))?(plot_nums[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
@@ -555,23 +524,40 @@ _net_23
    assign  _vram_x_4_wraddress = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((_net_6&_net_21))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_23)?(plot_num[13:0]):14'b0)
+(((_net_6&_net_21))?(plot_num[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock or negedge p_reset)
+  begin
+if ((((~_net_6)&(_net_6&(~_net_21)))|(((~_net_6)|(_net_6&(~_net_21)))&(_net_6&_net_21))))
+ begin $display("Warning: assign collision(cam_test:_vram_x_4_wren) at %d",$time);
+if ((~_net_6)) $display("assert ((~_net_6)) line 146 at %d\n",$time);
+if ((_net_6&(~_net_21))) $display("assert ((_net_6&(~_net_21))) line 138 at %d\n",$time);
+if ((_net_6&_net_21)) $display("assert ((_net_6&_net_21)) line 131 at %d\n",$time);
+ end
+ end
+
+// synthesis translate_on
+// synopsys translate_on
    assign  _vram_x_4_wren = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((((~_net_6)&(_net_6&(~_net_21)))|(((~_net_6)|(_net_6&(~_net_21)))&(_net_6&_net_21))))? 1'bx :((((~_net_6)|(_net_6&(~_net_21)))|(_net_6&_net_21)))? 
 // synthesis translate_on
 // synopsys translate_on
-_net_23
+(((~_net_6))?1'b0:1'b0)|
+    (((_net_6&(~_net_21)))?1'b0:1'b0)|
+    (((_net_6&_net_21))?1'b1:1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -583,10 +569,10 @@ _net_23
    assign  _vram_x_3_data = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((_net_6&_net_21))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_23)?_camera_out_1_VGA_B:4'b0)
+(((_net_6&_net_21))?_camera_out_1_VGA_B:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -596,10 +582,10 @@ _net_23
    assign  _vram_x_3_rdaddress = 
 // synthesis translate_off
 // synopsys translate_off
-(((~_net_28)&_net_35))? 
+(((_net_26&(~_net_27))&_net_34))? 
 // synthesis translate_on
 // synopsys translate_on
-((((~_net_28)&_net_35))?(plot_nums[13:0]):14'b0)
+((((_net_26&(~_net_27))&_net_34))?(plot_nums[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
@@ -609,23 +595,40 @@ _net_23
    assign  _vram_x_3_wraddress = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((_net_6&_net_21))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_23)?(plot_num[13:0]):14'b0)
+(((_net_6&_net_21))?(plot_num[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock or negedge p_reset)
+  begin
+if ((((~_net_6)&(_net_6&(~_net_21)))|(((~_net_6)|(_net_6&(~_net_21)))&(_net_6&_net_21))))
+ begin $display("Warning: assign collision(cam_test:_vram_x_3_wren) at %d",$time);
+if ((~_net_6)) $display("assert ((~_net_6)) line 145 at %d\n",$time);
+if ((_net_6&(~_net_21))) $display("assert ((_net_6&(~_net_21))) line 137 at %d\n",$time);
+if ((_net_6&_net_21)) $display("assert ((_net_6&_net_21)) line 125 at %d\n",$time);
+ end
+ end
+
+// synthesis translate_on
+// synopsys translate_on
    assign  _vram_x_3_wren = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_23)? 
+((((~_net_6)&(_net_6&(~_net_21)))|(((~_net_6)|(_net_6&(~_net_21)))&(_net_6&_net_21))))? 1'bx :((((~_net_6)|(_net_6&(~_net_21)))|(_net_6&_net_21)))? 
 // synthesis translate_on
 // synopsys translate_on
-_net_23
+(((~_net_6))?1'b0:1'b0)|
+    (((_net_6&(~_net_21)))?1'b0:1'b0)|
+    (((_net_6&_net_21))?1'b1:1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -637,10 +640,10 @@ _net_23
    assign  _vram_x_2_data = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((_net_6&_net_16))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_18)?_camera_out_VGA_R:4'b0)
+(((_net_6&_net_16))?_camera_out_VGA_R:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -652,11 +655,10 @@ _net_23
 // synopsys translate_off
 always @(posedge m_clock or negedge p_reset)
   begin
-if ((((_net_49&_net_56)&(_net_49&_net_55))|(((_net_49&_net_56)|(_net_49&_net_55))&_net_28)))
+if ((_net_48&(_net_26&_net_27)))
  begin $display("Warning: assign collision(cam_test:_vram_x_2_rdaddress) at %d",$time);
-if ((_net_49&_net_56)) $display("assert ((_net_49&_net_56)) line 241 at %d\n",$time);
-if ((_net_49&_net_55)) $display("assert ((_net_49&_net_55)) line 234 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 131 at %d\n",$time);
+if (_net_48) $display("assert (_net_48) line 234 at %d\n",$time);
+if ((_net_26&_net_27)) $display("assert ((_net_26&_net_27)) line 154 at %d\n",$time);
  end
  end
 
@@ -665,12 +667,11 @@ if (_net_28) $display("assert (_net_28) line 131 at %d\n",$time);
    assign  _vram_x_2_rdaddress = 
 // synthesis translate_off
 // synopsys translate_off
-((((_net_49&_net_56)&(_net_49&_net_55))|(((_net_49&_net_56)|(_net_49&_net_55))&_net_28)))? 14'bx :((((_net_49&_net_56)|(_net_49&_net_55))|_net_28))? 
+((_net_48&(_net_26&_net_27)))? 14'bx :((_net_48|(_net_26&_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-(((_net_49&_net_56))?(rgb_num[13:0]):14'b0)|
-    (((_net_49&_net_55))?(rgb_num[13:0]):14'b0)|
-    ((_net_28)?(plot_nums[13:0]):14'b0)
+((_net_48)?(rgb_num[13:0]):14'b0)|
+    (((_net_26&_net_27))?(plot_nums[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
@@ -680,23 +681,40 @@ if (_net_28) $display("assert (_net_28) line 131 at %d\n",$time);
    assign  _vram_x_2_wraddress = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((_net_6&_net_16))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_18)?(plot_num[13:0]):14'b0)
+(((_net_6&_net_16))?(plot_num[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock or negedge p_reset)
+  begin
+if ((((~_net_6)&(_net_6&(~_net_16)))|(((~_net_6)|(_net_6&(~_net_16)))&(_net_6&_net_16))))
+ begin $display("Warning: assign collision(cam_test:_vram_x_2_wren) at %d",$time);
+if ((~_net_6)) $display("assert ((~_net_6)) line 144 at %d\n",$time);
+if ((_net_6&(~_net_16))) $display("assert ((_net_6&(~_net_16))) line 119 at %d\n",$time);
+if ((_net_6&_net_16)) $display("assert ((_net_6&_net_16)) line 112 at %d\n",$time);
+ end
+ end
+
+// synthesis translate_on
+// synopsys translate_on
    assign  _vram_x_2_wren = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((((~_net_6)&(_net_6&(~_net_16)))|(((~_net_6)|(_net_6&(~_net_16)))&(_net_6&_net_16))))? 1'bx :((((~_net_6)|(_net_6&(~_net_16)))|(_net_6&_net_16)))? 
 // synthesis translate_on
 // synopsys translate_on
-_net_18
+(((~_net_6))?1'b0:1'b0)|
+    (((_net_6&(~_net_16)))?1'b0:1'b0)|
+    (((_net_6&_net_16))?1'b1:1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -708,10 +726,10 @@ _net_18
    assign  _vram_x_1_data = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((_net_6&_net_16))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_18)?_camera_out_VGA_G:4'b0)
+(((_net_6&_net_16))?_camera_out_VGA_G:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -723,11 +741,10 @@ _net_18
 // synopsys translate_off
 always @(posedge m_clock or negedge p_reset)
   begin
-if ((((_net_49&_net_56)&(_net_49&_net_55))|(((_net_49&_net_56)|(_net_49&_net_55))&_net_28)))
+if ((_net_48&(_net_26&_net_27)))
  begin $display("Warning: assign collision(cam_test:_vram_x_1_rdaddress) at %d",$time);
-if ((_net_49&_net_56)) $display("assert ((_net_49&_net_56)) line 240 at %d\n",$time);
-if ((_net_49&_net_55)) $display("assert ((_net_49&_net_55)) line 233 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 130 at %d\n",$time);
+if (_net_48) $display("assert (_net_48) line 233 at %d\n",$time);
+if ((_net_26&_net_27)) $display("assert ((_net_26&_net_27)) line 153 at %d\n",$time);
  end
  end
 
@@ -736,12 +753,11 @@ if (_net_28) $display("assert (_net_28) line 130 at %d\n",$time);
    assign  _vram_x_1_rdaddress = 
 // synthesis translate_off
 // synopsys translate_off
-((((_net_49&_net_56)&(_net_49&_net_55))|(((_net_49&_net_56)|(_net_49&_net_55))&_net_28)))? 14'bx :((((_net_49&_net_56)|(_net_49&_net_55))|_net_28))? 
+((_net_48&(_net_26&_net_27)))? 14'bx :((_net_48|(_net_26&_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-(((_net_49&_net_56))?(rgb_num[13:0]):14'b0)|
-    (((_net_49&_net_55))?(rgb_num[13:0]):14'b0)|
-    ((_net_28)?(plot_nums[13:0]):14'b0)
+((_net_48)?(rgb_num[13:0]):14'b0)|
+    (((_net_26&_net_27))?(plot_nums[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
@@ -751,23 +767,40 @@ if (_net_28) $display("assert (_net_28) line 130 at %d\n",$time);
    assign  _vram_x_1_wraddress = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((_net_6&_net_16))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_18)?(plot_num[13:0]):14'b0)
+(((_net_6&_net_16))?(plot_num[13:0]):14'b0)
 // synthesis translate_off
 // synopsys translate_off
 :14'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock or negedge p_reset)
+  begin
+if ((((~_net_6)&(_net_6&(~_net_16)))|(((~_net_6)|(_net_6&(~_net_16)))&(_net_6&_net_16))))
+ begin $display("Warning: assign collision(cam_test:_vram_x_1_wren) at %d",$time);
+if ((~_net_6)) $display("assert ((~_net_6)) line 143 at %d\n",$time);
+if ((_net_6&(~_net_16))) $display("assert ((_net_6&(~_net_16))) line 118 at %d\n",$time);
+if ((_net_6&_net_16)) $display("assert ((_net_6&_net_16)) line 111 at %d\n",$time);
+ end
+ end
+
+// synthesis translate_on
+// synopsys translate_on
    assign  _vram_x_1_wren = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_18)? 
+((((~_net_6)&(_net_6&(~_net_16)))|(((~_net_6)|(_net_6&(~_net_16)))&(_net_6&_net_16))))? 1'bx :((((~_net_6)|(_net_6&(~_net_16)))|(_net_6&_net_16)))? 
 // synthesis translate_on
 // synopsys translate_on
-_net_18
+(((~_net_6))?1'b0:1'b0)|
+    (((_net_6&(~_net_16)))?1'b0:1'b0)|
+    (((_net_6&_net_16))?1'b1:1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -794,40 +827,88 @@ _net_18
    assign  _net_3 = (encode[_motor_x_HEXpwm3]);
    assign  _net_4 = (encode[_motor_x_HEXpwm4]);
    assign  _net_5 = (encode[_motor_x_HEXpwm5]);
-   assign  _net_6 = _camera_out_out_plot_num_x;
-   assign  _net_7 = _camera_out_out_plot_num_y;
-   assign  _net_8 = ({({22'b0000000000000000000000,_net_7}),32'b00000000000000000000000000000000});
-   assign  _net_9 = _VGA_out_plot_num_x;
-   assign  _net_10 = _VGA_out_plot_num_y;
-   assign  _net_11 = ({({22'b0000000000000000000000,_net_10}),32'b00000000000000000000000000000000});
-   assign  _net_12 = _camera_out_1_out_plot_num_x;
-   assign  _net_13 = _camera_out_1_out_plot_num_y;
-   assign  _net_14 = ({({22'b0000000000000000000000,_net_13}),32'b00000000000000000000000000000000});
-   assign  _net_15 = (_VGA_out_plot_num_x-10'b0010000000);
-   assign  _net_16 = (_VGA_out_plot_num_y-10'b0010000000);
-   assign  _net_17 = ({({22'b0000000000000000000000,_net_16}),32'b00000000000000000000000000000000});
-   assign  _net_18 = ((((_camera_out_out_plot_num_x >= 10'b0000000000)&(_camera_out_out_plot_num_x < 10'b0010000000))&(_camera_out_out_plot_num_y >= 10'b0000000000))&(_camera_out_out_plot_num_y < 10'b0010000000));
-   assign  _net_19 = plot_num_x;
-   assign  _net_20 = plot_num_y;
-   assign  _net_21 = _net_20;
-   assign  _net_22 = (_net_19+_net_21);
-   assign  _net_23 = ((((_camera_out_1_out_plot_num_x >= 10'b0000000000)&(_camera_out_1_out_plot_num_x < 10'b0010000000))&(_camera_out_1_out_plot_num_y >= 10'b0000000000))&(_camera_out_1_out_plot_num_y < 10'b0010000000));
-   assign  _net_24 = plot_num_x2;
-   assign  _net_25 = plot_num_y2;
-   assign  _net_26 = _net_25;
-   assign  _net_27 = (_net_24+_net_26);
-   assign  _net_28 = (((((_VGA_out_plot_num_x-10'b0000000111) >= 10'b0000000000)&((_VGA_out_plot_num_x-10'b0000000111) < 10'b0010000000))&(_VGA_out_plot_num_y >= 10'b0000000000))&(_VGA_out_plot_num_y < 10'b0010000000));
-   assign  _net_29 = VGA_plot_num_x;
-   assign  _net_30 = VGA_plot_num_y;
-   assign  _net_31 = _net_30;
-   assign  _net_32 = (_net_29+_net_31);
+   assign  _net_6 = (~sw_send);
+   assign  _net_7 = (_VGA_out_plot_num_x-10'b0000000111);
+   assign  _net_8 = _VGA_out_plot_num_y;
+   assign  _net_9 = ({({22'b0000000000000000000000,_net_8}),32'b00000000000000000000000000000000});
+   assign  _net_10 = _camera_out_1_out_plot_num_x;
+   assign  _net_11 = _camera_out_1_out_plot_num_y;
+   assign  _net_12 = ({({22'b0000000000000000000000,_net_11}),32'b00000000000000000000000000000000});
+   assign  _net_13 = _camera_out_out_plot_num_x;
+   assign  _net_14 = _camera_out_out_plot_num_y;
+   assign  _net_15 = ({({22'b0000000000000000000000,_net_14}),32'b00000000000000000000000000000000});
+   assign  _net_16 = 
+// synthesis translate_off
+// synopsys translate_off
+(_net_6)? 
+// synthesis translate_on
+// synopsys translate_on
+((_net_6)?((((_camera_out_out_plot_num_x >= 10'b0000000000)&(_camera_out_out_plot_num_x < 10'b0010000000))&(_camera_out_out_plot_num_y >= 10'b0000000000))&(_camera_out_out_plot_num_y < 10'b0010000000)):1'b0)
+// synthesis translate_off
+// synopsys translate_off
+:1'bx
+// synthesis translate_on
+// synopsys translate_on
+;
+   assign  _net_17 = plot_num_x;
+   assign  _net_18 = plot_num_y;
+   assign  _net_19 = _net_18;
+   assign  _net_20 = (_net_17+_net_19);
+   assign  _net_21 = 
+// synthesis translate_off
+// synopsys translate_off
+(_net_6)? 
+// synthesis translate_on
+// synopsys translate_on
+((_net_6)?((((_camera_out_1_out_plot_num_x >= 10'b0000000000)&(_camera_out_1_out_plot_num_x < 10'b0010000000))&(_camera_out_1_out_plot_num_y >= 10'b0000000000))&(_camera_out_1_out_plot_num_y < 10'b0010000000)):1'b0)
+// synthesis translate_off
+// synopsys translate_off
+:1'bx
+// synthesis translate_on
+// synopsys translate_on
+;
+   assign  _net_22 = plot_num_x2;
+   assign  _net_23 = plot_num_y2;
+   assign  _net_24 = _net_23;
+   assign  _net_25 = (_net_22+_net_24);
+   assign  _net_26 = (~sw_send);
+   assign  _net_27 = 
+// synthesis translate_off
+// synopsys translate_off
+(_net_26)? 
+// synthesis translate_on
+// synopsys translate_on
+((_net_26)?(((((_VGA_out_plot_num_x-10'b0000000111) >= 10'b0000000000)&((_VGA_out_plot_num_x-10'b0000000111) < 10'b0010000000))&(_VGA_out_plot_num_y >= 10'b0000000000))&(_VGA_out_plot_num_y < 10'b0010000000)):1'b0)
+// synthesis translate_off
+// synopsys translate_off
+:1'bx
+// synthesis translate_on
+// synopsys translate_on
+;
+   assign  _net_28 = VGA_plot_num_x;
+   assign  _net_29 = VGA_plot_num_y;
+   assign  _net_30 = _net_29;
+   assign  _net_31 = (_net_28+_net_30);
+   assign  _net_32 = 
+// synthesis translate_off
+// synopsys translate_off
+((_net_26&_net_27))? 
+// synthesis translate_on
+// synopsys translate_on
+(((_net_26&_net_27))?(((_VGA_out_plot_num_x-10'b0000000111)==10'b0000000000)&(_VGA_out_plot_num_y >= 10'b0000000000)):1'b0)
+// synthesis translate_off
+// synopsys translate_off
+:1'bx
+// synthesis translate_on
+// synopsys translate_on
+;
    assign  _net_33 = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_28)? 
+(((_net_26&_net_27)&_net_32))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_28)?(((_VGA_out_plot_num_x-10'b0000000111)==10'b0000000000)&(_VGA_out_plot_num_y >= 10'b0000000000)):1'b0)
+((((_net_26&_net_27)&_net_32))?(wait_motor==10'b0000010011):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -837,42 +918,42 @@ _net_18
    assign  _net_34 = 
 // synthesis translate_off
 // synopsys translate_off
-((_net_28&_net_33))? 
+((_net_26&(~_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-(((_net_28&_net_33))?(wait_motor==10'b0000010011):1'b0)
+(((_net_26&(~_net_27)))?(((((_VGA_out_plot_num_x-10'b0000000111) >= 10'b0010000000)&((_VGA_out_plot_num_x-10'b0000000111) < 10'b0100000000))&(_VGA_out_plot_num_y >= 10'b0010000000))&(_VGA_out_plot_num_y < 10'b0100000000)):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
-   assign  _net_35 = 
+   assign  _net_35 = VGA_plot_num_x;
+   assign  _net_36 = VGA_plot_num_y;
+   assign  _net_37 = _net_36;
+   assign  _net_38 = (_net_35+_net_37);
+   assign  _net_39 = (count==32'b00000101111101011110000100000000);
+   assign  _net_40 = ((motor_state[0])==1'b0);
+   assign  _net_41 = 
 // synthesis translate_off
 // synopsys translate_off
-((~_net_28))? 
+((~_net_40))? 
 // synthesis translate_on
 // synopsys translate_on
-(((~_net_28))?(((((_VGA_out_plot_num_x-10'b0000000111) >= 10'b0010000000)&((_VGA_out_plot_num_x-10'b0000000111) < 10'b0100000000))&(_VGA_out_plot_num_y >= 10'b0010000000))&(_VGA_out_plot_num_y < 10'b0100000000)):1'b0)
+(((~_net_40))?((motor_state[1:0])==2'b01):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
-   assign  _net_36 = VGA_plot_num_x;
-   assign  _net_37 = VGA_plot_num_y;
-   assign  _net_38 = _net_37;
-   assign  _net_39 = (_net_36+_net_38);
-   assign  _net_40 = (count==32'b00000101111101011110000100000000);
-   assign  _net_41 = ((motor_state[0])==1'b0);
    assign  _net_42 = 
 // synthesis translate_off
 // synopsys translate_off
-((~_net_41))? 
+((~_net_40))? 
 // synthesis translate_on
 // synopsys translate_on
-(((~_net_41))?((motor_state[1:0])==2'b01):1'b0)
+(((~_net_40))?(motor_state==3'b011):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -882,10 +963,10 @@ _net_18
    assign  _net_43 = 
 // synthesis translate_off
 // synopsys translate_off
-((~_net_41))? 
+((~_net_40))? 
 // synthesis translate_on
 // synopsys translate_on
-(((~_net_41))?(motor_state==3'b011):1'b0)
+(((~_net_40))?(motor_state==3'b111):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -893,19 +974,6 @@ _net_18
 // synopsys translate_on
 ;
    assign  _net_44 = 
-// synthesis translate_off
-// synopsys translate_off
-((~_net_41))? 
-// synthesis translate_on
-// synopsys translate_on
-(((~_net_41))?(motor_state==3'b111):1'b0)
-// synthesis translate_off
-// synopsys translate_off
-:1'bx
-// synthesis translate_on
-// synopsys translate_on
-;
-   assign  _net_45 = 
 // synthesis translate_off
 // synopsys translate_off
 ((motor_enable != 1'b0))? 
@@ -918,13 +986,26 @@ _net_18
 // synthesis translate_on
 // synopsys translate_on
 ;
+   assign  _net_45 = 
+// synthesis translate_off
+// synopsys translate_off
+(((motor_enable != 1'b0)&(~_net_44)))? 
+// synthesis translate_on
+// synopsys translate_on
+((((motor_enable != 1'b0)&(~_net_44)))?(motor_mode==3'b100):1'b0)
+// synthesis translate_off
+// synopsys translate_off
+:1'bx
+// synthesis translate_on
+// synopsys translate_on
+;
    assign  _net_46 = 
 // synthesis translate_off
 // synopsys translate_off
-(((motor_enable != 1'b0)&(~_net_45)))? 
+((((motor_enable != 1'b0)&(~_net_44))&(~_net_45)))? 
 // synthesis translate_on
 // synopsys translate_on
-((((motor_enable != 1'b0)&(~_net_45)))?(motor_mode==3'b100):1'b0)
+(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45)))?(motor_mode==3'b001):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -934,37 +1015,37 @@ _net_18
    assign  _net_47 = 
 // synthesis translate_off
 // synopsys translate_off
-((((motor_enable != 1'b0)&(~_net_45))&(~_net_46)))? 
+(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46)))? 
 // synthesis translate_on
 // synopsys translate_on
-(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46)))?(motor_mode==3'b001):1'b0)
+((((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46)))?(motor_mode==3'b010):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
-   assign  _net_48 = 
+   assign  _net_48 = (sw_send&(~end_sw));
+   assign  _net_49 = 
 // synthesis translate_off
 // synopsys translate_off
-(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47)))? 
+(_net_48)? 
 // synthesis translate_on
 // synopsys translate_on
-((((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47)))?(motor_mode==3'b010):1'b0)
+((_net_48)?(wait_uart > 12'b011111010000):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
-   assign  _net_49 = (count_uart==32'b00000000000000000000011111010000);
    assign  _net_50 = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_49)? 
+((_net_48&_net_49))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_49)?(rgb_num==32'b00000000000000000110000000000000):1'b0)
+(((_net_48&_net_49))?((rgb_num > 32'b00000000000000000011111111111111)&(rgb_num < 32'b00000001110010011100001110000000)):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -974,10 +1055,10 @@ _net_18
    assign  _net_51 = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_49)? 
+(((_net_48&_net_49)&(~_net_50)))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_49)?(uart_time==2'b10):1'b0)
+((((_net_48&_net_49)&(~_net_50)))?(uart_time==2'b10):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -987,10 +1068,10 @@ _net_18
    assign  _net_52 = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_49)? 
+(((_net_48&_net_49)&(~_net_50)))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_49)?(uart_time==2'b00):1'b0)
+((((_net_48&_net_49)&(~_net_50)))?(uart_time==2'b11):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -1000,10 +1081,10 @@ _net_18
    assign  _net_53 = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_49)? 
+(((_net_48&_net_49)&(~_net_50)))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_49)?(uart_time==2'b01):1'b0)
+((((_net_48&_net_49)&(~_net_50)))?(uart_time==2'b00):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
@@ -1013,43 +1094,17 @@ _net_18
    assign  _net_54 = 
 // synthesis translate_off
 // synopsys translate_off
-(_net_49)? 
+(((_net_48&_net_49)&(~_net_50)))? 
 // synthesis translate_on
 // synopsys translate_on
-((_net_49)?(uart_time==2'b10):1'b0)
+((((_net_48&_net_49)&(~_net_50)))?(uart_time==2'b01):1'b0)
 // synthesis translate_off
 // synopsys translate_off
 :1'bx
 // synthesis translate_on
 // synopsys translate_on
 ;
-   assign  _net_55 = 
-// synthesis translate_off
-// synopsys translate_off
-(_net_49)? 
-// synthesis translate_on
-// synopsys translate_on
-((_net_49)?(rgb==1'b0):1'b0)
-// synthesis translate_off
-// synopsys translate_off
-:1'bx
-// synthesis translate_on
-// synopsys translate_on
-;
-   assign  _net_56 = 
-// synthesis translate_off
-// synopsys translate_off
-(_net_49)? 
-// synthesis translate_on
-// synopsys translate_on
-((_net_49)?(rgb==1'b1):1'b0)
-// synthesis translate_off
-// synopsys translate_off
-:1'bx
-// synthesis translate_on
-// synopsys translate_on
-;
-   assign  _net_57 = _vram_x_2_q;
+   assign  _net_55 = (~sw_send);
    assign  xclk = _camera_out_xclk;
    assign  xclk2 = _camera_out_1_xclk;
    assign  sda = _camera_out_sda;
@@ -1067,11 +1122,12 @@ _net_18
 // synopsys translate_off
 always @(posedge m_clock or negedge p_reset)
   begin
-if (((((~_net_28)&(~_net_35))&((~_net_28)&_net_35))|((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))&_net_28)))
+if (((((~_net_26)&((_net_26&(~_net_27))&(~_net_34)))|(((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))&((_net_26&(~_net_27))&_net_34)))|((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))&(_net_26&_net_27))))
  begin $display("Warning: assign collision(cam_test:VGA_R) at %d",$time);
-if (((~_net_28)&(~_net_35))) $display("assert (((~_net_28)&(~_net_35))) line 157 at %d\n",$time);
-if (((~_net_28)&_net_35)) $display("assert (((~_net_28)&_net_35)) line 154 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 134 at %d\n",$time);
+if ((~_net_26)) $display("assert ((~_net_26)) line 185 at %d\n",$time);
+if (((_net_26&(~_net_27))&(~_net_34))) $display("assert (((_net_26&(~_net_27))&(~_net_34))) line 180 at %d\n",$time);
+if (((_net_26&(~_net_27))&_net_34)) $display("assert (((_net_26&(~_net_27))&_net_34)) line 177 at %d\n",$time);
+if ((_net_26&_net_27)) $display("assert ((_net_26&_net_27)) line 157 at %d\n",$time);
  end
  end
 
@@ -1080,12 +1136,13 @@ if (_net_28) $display("assert (_net_28) line 134 at %d\n",$time);
    assign  VGA_R = 
 // synthesis translate_off
 // synopsys translate_off
-(((((~_net_28)&(~_net_35))&((~_net_28)&_net_35))|((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))&_net_28)))? 4'bx :(((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))|_net_28))? 
+(((((~_net_26)&((_net_26&(~_net_27))&(~_net_34)))|(((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))&((_net_26&(~_net_27))&_net_34)))|((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))&(_net_26&_net_27))))? 4'bx :(((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))|(_net_26&_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-((((~_net_28)&(~_net_35)))?4'b0000:4'b0)|
-    ((((~_net_28)&_net_35))?_vram_x_5_q:4'b0)|
-    ((_net_28)?_vram_x_2_q:4'b0)
+(((~_net_26))?4'b0000:4'b0)|
+    ((((_net_26&(~_net_27))&(~_net_34)))?4'b0000:4'b0)|
+    ((((_net_26&(~_net_27))&_net_34))?_vram_x_5_q:4'b0)|
+    (((_net_26&_net_27))?_vram_x_2_q:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -1097,11 +1154,12 @@ if (_net_28) $display("assert (_net_28) line 134 at %d\n",$time);
 // synopsys translate_off
 always @(posedge m_clock or negedge p_reset)
   begin
-if (((((~_net_28)&(~_net_35))&((~_net_28)&_net_35))|((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))&_net_28)))
+if (((((~_net_26)&((_net_26&(~_net_27))&(~_net_34)))|(((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))&((_net_26&(~_net_27))&_net_34)))|((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))&(_net_26&_net_27))))
  begin $display("Warning: assign collision(cam_test:VGA_B) at %d",$time);
-if (((~_net_28)&(~_net_35))) $display("assert (((~_net_28)&(~_net_35))) line 159 at %d\n",$time);
-if (((~_net_28)&_net_35)) $display("assert (((~_net_28)&_net_35)) line 152 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 132 at %d\n",$time);
+if ((~_net_26)) $display("assert ((~_net_26)) line 187 at %d\n",$time);
+if (((_net_26&(~_net_27))&(~_net_34))) $display("assert (((_net_26&(~_net_27))&(~_net_34))) line 182 at %d\n",$time);
+if (((_net_26&(~_net_27))&_net_34)) $display("assert (((_net_26&(~_net_27))&_net_34)) line 175 at %d\n",$time);
+if ((_net_26&_net_27)) $display("assert ((_net_26&_net_27)) line 155 at %d\n",$time);
  end
  end
 
@@ -1110,12 +1168,13 @@ if (_net_28) $display("assert (_net_28) line 132 at %d\n",$time);
    assign  VGA_B = 
 // synthesis translate_off
 // synopsys translate_off
-(((((~_net_28)&(~_net_35))&((~_net_28)&_net_35))|((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))&_net_28)))? 4'bx :(((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))|_net_28))? 
+(((((~_net_26)&((_net_26&(~_net_27))&(~_net_34)))|(((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))&((_net_26&(~_net_27))&_net_34)))|((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))&(_net_26&_net_27))))? 4'bx :(((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))|(_net_26&_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-((((~_net_28)&(~_net_35)))?4'b0000:4'b0)|
-    ((((~_net_28)&_net_35))?_vram_x_3_q:4'b0)|
-    ((_net_28)?_vram_x_q:4'b0)
+(((~_net_26))?4'b0000:4'b0)|
+    ((((_net_26&(~_net_27))&(~_net_34)))?4'b0000:4'b0)|
+    ((((_net_26&(~_net_27))&_net_34))?_vram_x_3_q:4'b0)|
+    (((_net_26&_net_27))?_vram_x_q:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -1127,11 +1186,12 @@ if (_net_28) $display("assert (_net_28) line 132 at %d\n",$time);
 // synopsys translate_off
 always @(posedge m_clock or negedge p_reset)
   begin
-if (((((~_net_28)&(~_net_35))&((~_net_28)&_net_35))|((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))&_net_28)))
+if (((((~_net_26)&((_net_26&(~_net_27))&(~_net_34)))|(((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))&((_net_26&(~_net_27))&_net_34)))|((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))&(_net_26&_net_27))))
  begin $display("Warning: assign collision(cam_test:VGA_G) at %d",$time);
-if (((~_net_28)&(~_net_35))) $display("assert (((~_net_28)&(~_net_35))) line 158 at %d\n",$time);
-if (((~_net_28)&_net_35)) $display("assert (((~_net_28)&_net_35)) line 153 at %d\n",$time);
-if (_net_28) $display("assert (_net_28) line 133 at %d\n",$time);
+if ((~_net_26)) $display("assert ((~_net_26)) line 186 at %d\n",$time);
+if (((_net_26&(~_net_27))&(~_net_34))) $display("assert (((_net_26&(~_net_27))&(~_net_34))) line 181 at %d\n",$time);
+if (((_net_26&(~_net_27))&_net_34)) $display("assert (((_net_26&(~_net_27))&_net_34)) line 176 at %d\n",$time);
+if ((_net_26&_net_27)) $display("assert ((_net_26&_net_27)) line 156 at %d\n",$time);
  end
  end
 
@@ -1140,12 +1200,13 @@ if (_net_28) $display("assert (_net_28) line 133 at %d\n",$time);
    assign  VGA_G = 
 // synthesis translate_off
 // synopsys translate_off
-(((((~_net_28)&(~_net_35))&((~_net_28)&_net_35))|((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))&_net_28)))? 4'bx :(((((~_net_28)&(~_net_35))|((~_net_28)&_net_35))|_net_28))? 
+(((((~_net_26)&((_net_26&(~_net_27))&(~_net_34)))|(((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))&((_net_26&(~_net_27))&_net_34)))|((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))&(_net_26&_net_27))))? 4'bx :(((((~_net_26)|((_net_26&(~_net_27))&(~_net_34)))|((_net_26&(~_net_27))&_net_34))|(_net_26&_net_27)))? 
 // synthesis translate_on
 // synopsys translate_on
-((((~_net_28)&(~_net_35)))?4'b0000:4'b0)|
-    ((((~_net_28)&_net_35))?_vram_x_4_q:4'b0)|
-    ((_net_28)?_vram_x_1_q:4'b0)
+(((~_net_26))?4'b0000:4'b0)|
+    ((((_net_26&(~_net_27))&(~_net_34)))?4'b0000:4'b0)|
+    ((((_net_26&(~_net_27))&_net_34))?_vram_x_4_q:4'b0)|
+    (((_net_26&_net_27))?_vram_x_1_q:4'b0)
 // synthesis translate_off
 // synopsys translate_off
 :4'bx
@@ -1168,23 +1229,23 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if (((_net_49&(~_net_51))&(_net_49&_net_51)))   uart_time <= 2'bx; 
+if ((_net_55&((_net_48&_net_49)&(~_net_50))))   uart_time <= 2'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if ((_net_49&(~_net_51)))
-      uart_time <= (uart_time+2'b01);
-else if ((_net_49&_net_51))
+if (_net_55)
       uart_time <= 2'b00;
+else if (((_net_48&_net_49)&(~_net_50)))
+      uart_time <= (uart_time+2'b01);
 end
 
 // synthesis translate_off
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if ((((_net_49&(~_net_51))|(_net_49&_net_51))==1'b1) ||
- (((_net_49&(~_net_51))|(_net_49&_net_51))==1'b0) ) begin
- if (((_net_49&(~_net_51))&(_net_49&_net_51)))
+if (((_net_55|((_net_48&_net_49)&(~_net_50)))==1'b1) ||
+ ((_net_55|((_net_48&_net_49)&(~_net_50)))==1'b0) ) begin
+ if ((_net_55&((_net_48&_net_49)&(~_net_50))))
  begin $display("Warning: assign collision(cam_test:uart_time) at %d",$time);
 
   end
@@ -1199,45 +1260,46 @@ if ((((_net_49&(~_net_51))|(_net_49&_net_51))==1'b1) ||
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
-     rgb <= 1'b0;
-else if (_net_49)
-      rgb <= (~rgb);
-end
-always @(posedge m_clock or negedge p_reset)
-  begin
-if (~p_reset)
-     count_uart <= 32'b00000000000000000000000000000000;
+     wait_uart <= 12'b000000000000;
 else 
 // synthesis translate_off
 // synopsys translate_off
-if (((~_net_49)&_net_49))   count_uart <= 32'bx; 
+if (((_net_55&(_net_48&(~_net_49)))|((_net_55|(_net_48&(~_net_49)))&(_net_48&_net_49))))   wait_uart <= 12'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if ((~_net_49))
-      count_uart <= (count_uart+32'b00000000000000000000000000000001);
-else if (_net_49)
-      count_uart <= 32'b00000000000000000000000000000000;
+if (_net_55)
+      wait_uart <= 12'b000000000000;
+else if ((_net_48&(~_net_49)))
+      wait_uart <= (wait_uart+12'b000000000001);
+else if ((_net_48&_net_49))
+      wait_uart <= 12'b000000000000;
 end
 
 // synthesis translate_off
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if ((((~_net_49)|_net_49)==1'b1) ||
- (((~_net_49)|_net_49)==1'b0) ) begin
- if (((~_net_49)&_net_49))
- begin $display("Warning: assign collision(cam_test:count_uart) at %d",$time);
+if ((((_net_55|(_net_48&(~_net_49)))|(_net_48&_net_49))==1'b1) ||
+ (((_net_55|(_net_48&(~_net_49)))|(_net_48&_net_49))==1'b0) ) begin
+ if (((_net_55&(_net_48&(~_net_49)))|((_net_55|(_net_48&(~_net_49)))&(_net_48&_net_49))))
+ begin $display("Warning: assign collision(cam_test:wait_uart) at %d",$time);
 
   end
  end
  else 
- $display("Warning: register set hazard(cam_test:count_uart) at %d",$time);
+ $display("Warning: register set hazard(cam_test:wait_uart) at %d",$time);
 
   end
 
 // synthesis translate_on
 // synopsys translate_on
+always @(posedge m_clock or negedge p_reset)
+  begin
+if (~p_reset)
+     clk25 <= 1'b0;
+else   clk25 <= clk25;
+end
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
@@ -1245,23 +1307,27 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if (((_net_49&(~_net_50))&(_net_49&_net_50)))   rgb_num <= 32'bx; 
+if ((((_net_55&(((_net_48&_net_49)&(~_net_50))&_net_53))|((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))&(((_net_48&_net_49)&(~_net_50))&_net_52)))|(((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))&((_net_48&_net_49)&_net_50))))   rgb_num <= 32'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if ((_net_49&(~_net_50)))
-      rgb_num <= (rgb_num+32'b00000000000000000000000000000001);
-else if ((_net_49&_net_50))
+if (_net_55)
       rgb_num <= 32'b00000000000000000000000000000000;
+else if ((((_net_48&_net_49)&(~_net_50))&_net_53))
+      rgb_num <= (rgb_num+32'b00000000000000000000000000000001);
+else if ((((_net_48&_net_49)&(~_net_50))&_net_52))
+      rgb_num <= (rgb_num+32'b00000000000000000000000000000001);
+else if (((_net_48&_net_49)&_net_50))
+      rgb_num <= 32'b00000000001011011100011011000000;
 end
 
 // synthesis translate_off
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if ((((_net_49&(~_net_50))|(_net_49&_net_50))==1'b1) ||
- (((_net_49&(~_net_50))|(_net_49&_net_50))==1'b0) ) begin
- if (((_net_49&(~_net_50))&(_net_49&_net_50)))
+if (((((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))|((_net_48&_net_49)&_net_50))==1'b1) ||
+ ((((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))|((_net_48&_net_49)&_net_50))==1'b0) ) begin
+ if ((((_net_55&(((_net_48&_net_49)&(~_net_50))&_net_53))|((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))&(((_net_48&_net_49)&(~_net_50))&_net_52)))|(((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))&((_net_48&_net_49)&_net_50))))
  begin $display("Warning: assign collision(cam_test:rgb_num) at %d",$time);
 
   end
@@ -1277,8 +1343,8 @@ always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      uart_data <= 8'b00000000;
-else if ((_net_49&_net_55))
-      uart_data <= ({_vram_x_2_q,_vram_x_1_q});
+else if (_net_55)
+      uart_data <= 8'b00000000;
 end
 always @(posedge m_clock or negedge p_reset)
   begin
@@ -1287,13 +1353,13 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if (((_net_49&_net_56)&(_net_49&_net_55)))   uart_data2 <= 8'bx; 
+if ((_net_55&(((_net_48&_net_49)&(~_net_50))&_net_53)))   uart_data2 <= 8'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if ((_net_49&_net_56))
-      uart_data2 <= (uart_data2|({4'b0000,_net_57}));
-else if ((_net_49&_net_55))
+if (_net_55)
+      uart_data2 <= 8'b00000000;
+else if ((((_net_48&_net_49)&(~_net_50))&_net_53))
       uart_data2 <= ({_vram_x_q,4'b0000});
 end
 
@@ -1301,9 +1367,9 @@ end
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if ((((_net_49&_net_56)|(_net_49&_net_55))==1'b1) ||
- (((_net_49&_net_56)|(_net_49&_net_55))==1'b0) ) begin
- if (((_net_49&_net_56)&(_net_49&_net_55)))
+if (((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))==1'b1) ||
+ ((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_53))==1'b0) ) begin
+ if ((_net_55&(((_net_48&_net_49)&(~_net_50))&_net_53)))
  begin $display("Warning: assign collision(cam_test:uart_data2) at %d",$time);
 
   end
@@ -1319,9 +1385,37 @@ always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      uart_data3 <= 8'b00000000;
-else if ((_net_49&_net_56))
+else 
+// synthesis translate_off
+// synopsys translate_off
+if ((_net_55&(((_net_48&_net_49)&(~_net_50))&_net_54)))   uart_data3 <= 8'bx; 
+  else 
+// synthesis translate_on
+// synopsys translate_on
+if (_net_55)
+      uart_data3 <= 8'b00000000;
+else if ((((_net_48&_net_49)&(~_net_50))&_net_54))
       uart_data3 <= ({_vram_x_1_q,_vram_x_q});
 end
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock)
+  begin
+if (((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_54))==1'b1) ||
+ ((_net_55|(((_net_48&_net_49)&(~_net_50))&_net_54))==1'b0) ) begin
+ if ((_net_55&(((_net_48&_net_49)&(~_net_50))&_net_54)))
+ begin $display("Warning: assign collision(cam_test:uart_data3) at %d",$time);
+
+  end
+ end
+ else 
+ $display("Warning: register set hazard(cam_test:uart_data3) at %d",$time);
+
+  end
+
+// synthesis translate_on
+// synopsys translate_on
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
@@ -1329,15 +1423,15 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if (((((~_net_28)&_net_35)&(_net_28&(~_net_33)))|((((~_net_28)&_net_35)|(_net_28&(~_net_33)))&(_net_28&_net_33))))   motor_light <= 1'bx; 
+if (((((_net_26&(~_net_27))&_net_34)&((_net_26&_net_27)&(~_net_32)))|((((_net_26&(~_net_27))&_net_34)|((_net_26&_net_27)&(~_net_32)))&((_net_26&_net_27)&_net_32))))   motor_light <= 1'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if (((~_net_28)&_net_35))
+if (((_net_26&(~_net_27))&_net_34))
       motor_light <= ((~(((_vram_x_3_q < 4'b0100)&(_vram_x_4_q < 4'b0100))&(_vram_x_5_q < 4'b0100)))&motor_light);
-else if ((_net_28&(~_net_33)))
+else if (((_net_26&_net_27)&(~_net_32)))
       motor_light <= ((~(((_vram_x_q < 4'b0100)&(_vram_x_1_q < 4'b0100))&(_vram_x_2_q < 4'b0100)))&motor_light);
-else if ((_net_28&_net_33))
+else if (((_net_26&_net_27)&_net_32))
       motor_light <= (~(((_vram_x_q < 4'b0100)&(_vram_x_1_q < 4'b0100))&(_vram_x_2_q < 4'b0100)));
 end
 
@@ -1345,9 +1439,9 @@ end
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if ((((((~_net_28)&_net_35)|(_net_28&(~_net_33)))|(_net_28&_net_33))==1'b1) ||
- (((((~_net_28)&_net_35)|(_net_28&(~_net_33)))|(_net_28&_net_33))==1'b0) ) begin
- if (((((~_net_28)&_net_35)&(_net_28&(~_net_33)))|((((~_net_28)&_net_35)|(_net_28&(~_net_33)))&(_net_28&_net_33))))
+if ((((((_net_26&(~_net_27))&_net_34)|((_net_26&_net_27)&(~_net_32)))|((_net_26&_net_27)&_net_32))==1'b1) ||
+ (((((_net_26&(~_net_27))&_net_34)|((_net_26&_net_27)&(~_net_32)))|((_net_26&_net_27)&_net_32))==1'b0) ) begin
+ if (((((_net_26&(~_net_27))&_net_34)&((_net_26&_net_27)&(~_net_32)))|((((_net_26&(~_net_27))&_net_34)|((_net_26&_net_27)&(~_net_32)))&((_net_26&_net_27)&_net_32))))
  begin $display("Warning: assign collision(cam_test:motor_light) at %d",$time);
 
   end
@@ -1366,21 +1460,21 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if (((((((~(motor_enable != 1'b0))&(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))&(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48)))|((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))&((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47)))|(((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))|((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))&(((motor_enable != 1'b0)&(~_net_45))&_net_46)))|((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))|((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))|(((motor_enable != 1'b0)&(~_net_45))&_net_46))&((motor_enable != 1'b0)&_net_45))))   motor_sw <= 4'bx; 
+if (((((((~(motor_enable != 1'b0))&(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))&(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47)))|((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))&((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46)))|(((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))|((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))&(((motor_enable != 1'b0)&(~_net_44))&_net_45)))|((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))|((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))|(((motor_enable != 1'b0)&(~_net_44))&_net_45))&((motor_enable != 1'b0)&_net_44))))   motor_sw <= 4'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
 if ((~(motor_enable != 1'b0)))
       motor_sw <= 4'b0000;
-else if ((((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))
+else if ((((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))
       motor_sw <= 4'b0000;
-else if ((((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))
+else if ((((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))
       motor_sw <= 4'b1001;
-else if (((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))
+else if (((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))
       motor_sw <= 4'b0110;
-else if ((((motor_enable != 1'b0)&(~_net_45))&_net_46))
+else if ((((motor_enable != 1'b0)&(~_net_44))&_net_45))
       motor_sw <= 4'b1010;
-else if (((motor_enable != 1'b0)&_net_45))
+else if (((motor_enable != 1'b0)&_net_44))
       motor_sw <= 4'b0101;
 end
 
@@ -1388,9 +1482,9 @@ end
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if ((((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))|((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))|(((motor_enable != 1'b0)&(~_net_45))&_net_46))|((motor_enable != 1'b0)&_net_45))==1'b1) ||
- (((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))|((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))|(((motor_enable != 1'b0)&(~_net_45))&_net_46))|((motor_enable != 1'b0)&_net_45))==1'b0) ) begin
- if (((((((~(motor_enable != 1'b0))&(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))&(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48)))|((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))&((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47)))|(((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))|((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))&(((motor_enable != 1'b0)&(~_net_45))&_net_46)))|((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&(~_net_48)))|(((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&(~_net_47))&_net_48))|((((motor_enable != 1'b0)&(~_net_45))&(~_net_46))&_net_47))|(((motor_enable != 1'b0)&(~_net_45))&_net_46))&((motor_enable != 1'b0)&_net_45))))
+if ((((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))|((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))|(((motor_enable != 1'b0)&(~_net_44))&_net_45))|((motor_enable != 1'b0)&_net_44))==1'b1) ||
+ (((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))|((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))|(((motor_enable != 1'b0)&(~_net_44))&_net_45))|((motor_enable != 1'b0)&_net_44))==1'b0) ) begin
+ if (((((((~(motor_enable != 1'b0))&(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))&(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47)))|((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))&((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46)))|(((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))|((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))&(((motor_enable != 1'b0)&(~_net_44))&_net_45)))|((((((~(motor_enable != 1'b0))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&(~_net_47)))|(((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&(~_net_46))&_net_47))|((((motor_enable != 1'b0)&(~_net_44))&(~_net_45))&_net_46))|(((motor_enable != 1'b0)&(~_net_44))&_net_45))&((motor_enable != 1'b0)&_net_44))))
  begin $display("Warning: assign collision(cam_test:motor_sw) at %d",$time);
 
   end
@@ -1406,25 +1500,99 @@ always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      VGA_plot_num_x <= 32'b00000000000000000000000000000000;
-else   VGA_plot_num_x <= ({22'b0000000000000000000000,_net_9});
+else if (_net_6)
+      VGA_plot_num_x <= ({22'b0000000000000000000000,_net_7});
 end
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      VGA_plot_num_y <= 32'b00000000000000000000000000000000;
-else   VGA_plot_num_y <= (_net_11[56:25]);
+else if (_net_6)
+      VGA_plot_num_y <= (_net_9[56:25]);
 end
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      plot_num_x <= 32'b00000000000000000000000000000000;
-else   plot_num_x <= ({22'b0000000000000000000000,_net_6});
+else if (_net_6)
+      plot_num_x <= ({22'b0000000000000000000000,_net_13});
 end
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
+     plot_num <= 32'b00000000000000000000000000000000;
+else 
+// synthesis translate_off
+// synopsys translate_off
+if (((_net_6&_net_21)&(_net_6&_net_16)))   plot_num <= 32'bx; 
+  else 
+// synthesis translate_on
+// synopsys translate_on
+if ((_net_6&_net_21))
+      plot_num <= _net_25;
+else if ((_net_6&_net_16))
+      plot_num <= _net_20;
+end
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock)
+  begin
+if ((((_net_6&_net_21)|(_net_6&_net_16))==1'b1) ||
+ (((_net_6&_net_21)|(_net_6&_net_16))==1'b0) ) begin
+ if (((_net_6&_net_21)&(_net_6&_net_16)))
+ begin $display("Warning: assign collision(cam_test:plot_num) at %d",$time);
+
+  end
+ end
+ else 
+ $display("Warning: register set hazard(cam_test:plot_num) at %d",$time);
+
+  end
+
+// synthesis translate_on
+// synopsys translate_on
+always @(posedge m_clock or negedge p_reset)
+  begin
+if (~p_reset)
+     plot_nums <= 32'b00000000000000000000000000000000;
+else 
+// synthesis translate_off
+// synopsys translate_off
+if ((((_net_26&(~_net_27))&_net_34)&(_net_26&_net_27)))   plot_nums <= 32'bx; 
+  else 
+// synthesis translate_on
+// synopsys translate_on
+if (((_net_26&(~_net_27))&_net_34))
+      plot_nums <= _net_38;
+else if ((_net_26&_net_27))
+      plot_nums <= _net_31;
+end
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock)
+  begin
+if (((((_net_26&(~_net_27))&_net_34)|(_net_26&_net_27))==1'b1) ||
+ ((((_net_26&(~_net_27))&_net_34)|(_net_26&_net_27))==1'b0) ) begin
+ if ((((_net_26&(~_net_27))&_net_34)&(_net_26&_net_27)))
+ begin $display("Warning: assign collision(cam_test:plot_nums) at %d",$time);
+
+  end
+ end
+ else 
+ $display("Warning: register set hazard(cam_test:plot_nums) at %d",$time);
+
+  end
+
+// synthesis translate_on
+// synopsys translate_on
+always @(posedge m_clock or negedge p_reset)
+  begin
+if (~p_reset)
      plot_num_y <= 32'b00000000000000000000000000000000;
-else   plot_num_y <= (_net_8[56:25]);
+else if (_net_6)
+      plot_num_y <= (_net_15[56:25]);
 end
 always @(posedge m_clock or negedge p_reset)
   begin
@@ -1433,13 +1601,13 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if ((((_net_28&_net_33)&(~_net_34))&((_net_28&_net_33)&_net_34)))   wait_motor <= 10'bx; 
+if (((((_net_26&_net_27)&_net_32)&(~_net_33))&(((_net_26&_net_27)&_net_32)&_net_33)))   wait_motor <= 10'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if (((_net_28&_net_33)&(~_net_34)))
+if ((((_net_26&_net_27)&_net_32)&(~_net_33)))
       wait_motor <= (wait_motor+10'b0000000001);
-else if (((_net_28&_net_33)&_net_34))
+else if ((((_net_26&_net_27)&_net_32)&_net_33))
       wait_motor <= 10'b0000000000;
 end
 
@@ -1447,9 +1615,9 @@ end
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if (((((_net_28&_net_33)&(~_net_34))|((_net_28&_net_33)&_net_34))==1'b1) ||
- ((((_net_28&_net_33)&(~_net_34))|((_net_28&_net_33)&_net_34))==1'b0) ) begin
- if ((((_net_28&_net_33)&(~_net_34))&((_net_28&_net_33)&_net_34)))
+if ((((((_net_26&_net_27)&_net_32)&(~_net_33))|(((_net_26&_net_27)&_net_32)&_net_33))==1'b1) ||
+ (((((_net_26&_net_27)&_net_32)&(~_net_33))|(((_net_26&_net_27)&_net_32)&_net_33))==1'b0) ) begin
+ if (((((_net_26&_net_27)&_net_32)&(~_net_33))&(((_net_26&_net_27)&_net_32)&_net_33)))
  begin $display("Warning: assign collision(cam_test:wait_motor) at %d",$time);
 
   end
@@ -1464,33 +1632,23 @@ if (((((_net_28&_net_33)&(~_net_34))|((_net_28&_net_33)&_net_34))==1'b1) ||
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
-     VGA_plot_num_x2 <= 32'b00000000000000000000000000000000;
-else   VGA_plot_num_x2 <= ({22'b0000000000000000000000,_net_15});
-end
-always @(posedge m_clock or negedge p_reset)
-  begin
-if (~p_reset)
-     VGA_plot_num_y2 <= 32'b00000000000000000000000000000000;
-else   VGA_plot_num_y2 <= (_net_17[56:25]);
-end
-always @(posedge m_clock or negedge p_reset)
-  begin
-if (~p_reset)
      plot_num_x2 <= 32'b00000000000000000000000000000000;
-else   plot_num_x2 <= ({22'b0000000000000000000000,_net_12});
+else if (_net_6)
+      plot_num_x2 <= ({22'b0000000000000000000000,_net_10});
 end
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      motor_enable <= 1'b0;
-else if ((_net_28&_net_33))
+else if (((_net_26&_net_27)&_net_32))
       motor_enable <= motor_light;
 end
 always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      plot_num_y2 <= 32'b00000000000000000000000000000000;
-else   plot_num_y2 <= (_net_14[56:25]);
+else if (_net_6)
+      plot_num_y2 <= (_net_12[56:25]);
 end
 always @(posedge m_clock or negedge p_reset)
   begin
@@ -1499,13 +1657,13 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if ((((~_net_40)&(motor_enable != 1'b0))&_net_40))   count <= 32'bx; 
+if ((((~_net_39)&(motor_enable != 1'b0))&_net_39))   count <= 32'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if (((~_net_40)&(motor_enable != 1'b0)))
+if (((~_net_39)&(motor_enable != 1'b0)))
       count <= (count+32'b00000000000000000000000000000001);
-else if (_net_40)
+else if (_net_39)
       count <= 32'b00000000000000000000000000000000;
 end
 
@@ -1513,9 +1671,9 @@ end
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if (((((~_net_40)&(motor_enable != 1'b0))|_net_40)==1'b1) ||
- ((((~_net_40)&(motor_enable != 1'b0))|_net_40)==1'b0) ) begin
- if ((((~_net_40)&(motor_enable != 1'b0))&_net_40))
+if (((((~_net_39)&(motor_enable != 1'b0))|_net_39)==1'b1) ||
+ ((((~_net_39)&(motor_enable != 1'b0))|_net_39)==1'b0) ) begin
+ if ((((~_net_39)&(motor_enable != 1'b0))&_net_39))
  begin $display("Warning: assign collision(cam_test:count) at %d",$time);
 
   end
@@ -1531,7 +1689,7 @@ always @(posedge m_clock or negedge p_reset)
   begin
 if (~p_reset)
      motor_state <= 3'b000;
-else if (_net_40)
+else if (_net_39)
       motor_state <= (motor_state+3'b001);
 end
 always @(posedge m_clock or negedge p_reset)
@@ -1541,25 +1699,27 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if ((((_net_49&_net_54)&(_net_49&_net_53))|(((_net_49&_net_54)|(_net_49&_net_53))&(_net_49&_net_52))))   uart_data_in <= 8'bx; 
+if (((((((_net_48&_net_49)&(~_net_50))&_net_54)&(((_net_48&_net_49)&(~_net_50))&_net_53))|(((((_net_48&_net_49)&(~_net_50))&_net_54)|(((_net_48&_net_49)&(~_net_50))&_net_53))&(((_net_48&_net_49)&(~_net_50))&_net_52)))|((((((_net_48&_net_49)&(~_net_50))&_net_54)|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))&(((_net_48&_net_49)&(~_net_50))&_net_51))))   uart_data_in <= 8'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if ((_net_49&_net_54))
+if ((((_net_48&_net_49)&(~_net_50))&_net_54))
+      uart_data_in <= ({(uart_data2[7:4]),_vram_x_2_q});
+else if ((((_net_48&_net_49)&(~_net_50))&_net_53))
+      uart_data_in <= ({_vram_x_2_q,_vram_x_1_q});
+else if ((((_net_48&_net_49)&(~_net_50))&_net_52))
+      uart_data_in <= 8'b11111001;
+else if ((((_net_48&_net_49)&(~_net_50))&_net_51))
       uart_data_in <= uart_data3;
-else if ((_net_49&_net_53))
-      uart_data_in <= uart_data2;
-else if ((_net_49&_net_52))
-      uart_data_in <= uart_data;
 end
 
 // synthesis translate_off
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if (((((_net_49&_net_54)|(_net_49&_net_53))|(_net_49&_net_52))==1'b1) ||
- ((((_net_49&_net_54)|(_net_49&_net_53))|(_net_49&_net_52))==1'b0) ) begin
- if ((((_net_49&_net_54)&(_net_49&_net_53))|(((_net_49&_net_54)|(_net_49&_net_53))&(_net_49&_net_52))))
+if ((((((((_net_48&_net_49)&(~_net_50))&_net_54)|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))|(((_net_48&_net_49)&(~_net_50))&_net_51))==1'b1) ||
+ (((((((_net_48&_net_49)&(~_net_50))&_net_54)|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))|(((_net_48&_net_49)&(~_net_50))&_net_51))==1'b0) ) begin
+ if (((((((_net_48&_net_49)&(~_net_50))&_net_54)&(((_net_48&_net_49)&(~_net_50))&_net_53))|(((((_net_48&_net_49)&(~_net_50))&_net_54)|(((_net_48&_net_49)&(~_net_50))&_net_53))&(((_net_48&_net_49)&(~_net_50))&_net_52)))|((((((_net_48&_net_49)&(~_net_50))&_net_54)|(((_net_48&_net_49)&(~_net_50))&_net_53))|(((_net_48&_net_49)&(~_net_50))&_net_52))&(((_net_48&_net_49)&(~_net_50))&_net_51))))
  begin $display("Warning: assign collision(cam_test:uart_data_in) at %d",$time);
 
   end
@@ -1578,17 +1738,17 @@ if (~p_reset)
 else 
 // synthesis translate_off
 // synopsys translate_off
-if ((((((~_net_41)&_net_44)&((~_net_41)&_net_43))|((((~_net_41)&_net_44)|((~_net_41)&_net_43))&((~_net_41)&_net_42)))|(((((~_net_41)&_net_44)|((~_net_41)&_net_43))|((~_net_41)&_net_42))&_net_41)))   motor_mode <= 3'bx; 
+if ((((((~_net_40)&_net_43)&((~_net_40)&_net_42))|((((~_net_40)&_net_43)|((~_net_40)&_net_42))&((~_net_40)&_net_41)))|(((((~_net_40)&_net_43)|((~_net_40)&_net_42))|((~_net_40)&_net_41))&_net_40)))   motor_mode <= 3'bx; 
   else 
 // synthesis translate_on
 // synopsys translate_on
-if (((~_net_41)&_net_44))
+if (((~_net_40)&_net_43))
       motor_mode <= 3'b100;
-else if (((~_net_41)&_net_43))
+else if (((~_net_40)&_net_42))
       motor_mode <= 3'b011;
-else if (((~_net_41)&_net_42))
+else if (((~_net_40)&_net_41))
       motor_mode <= 3'b001;
-else if (_net_41)
+else if (_net_40)
       motor_mode <= 3'b000;
 end
 
@@ -1596,15 +1756,50 @@ end
 // synopsys translate_off
 always @(posedge m_clock)
   begin
-if (((((((~_net_41)&_net_44)|((~_net_41)&_net_43))|((~_net_41)&_net_42))|_net_41)==1'b1) ||
- ((((((~_net_41)&_net_44)|((~_net_41)&_net_43))|((~_net_41)&_net_42))|_net_41)==1'b0) ) begin
- if ((((((~_net_41)&_net_44)&((~_net_41)&_net_43))|((((~_net_41)&_net_44)|((~_net_41)&_net_43))&((~_net_41)&_net_42)))|(((((~_net_41)&_net_44)|((~_net_41)&_net_43))|((~_net_41)&_net_42))&_net_41)))
+if (((((((~_net_40)&_net_43)|((~_net_40)&_net_42))|((~_net_40)&_net_41))|_net_40)==1'b1) ||
+ ((((((~_net_40)&_net_43)|((~_net_40)&_net_42))|((~_net_40)&_net_41))|_net_40)==1'b0) ) begin
+ if ((((((~_net_40)&_net_43)&((~_net_40)&_net_42))|((((~_net_40)&_net_43)|((~_net_40)&_net_42))&((~_net_40)&_net_41)))|(((((~_net_40)&_net_43)|((~_net_40)&_net_42))|((~_net_40)&_net_41))&_net_40)))
  begin $display("Warning: assign collision(cam_test:motor_mode) at %d",$time);
 
   end
  end
  else 
  $display("Warning: register set hazard(cam_test:motor_mode) at %d",$time);
+
+  end
+
+// synthesis translate_on
+// synopsys translate_on
+always @(posedge m_clock or negedge p_reset)
+  begin
+if (~p_reset)
+     end_sw <= 1'b0;
+else 
+// synthesis translate_off
+// synopsys translate_off
+if ((_net_55&((_net_48&_net_49)&_net_50)))   end_sw <= 1'bx; 
+  else 
+// synthesis translate_on
+// synopsys translate_on
+if (_net_55)
+      end_sw <= 1'b0;
+else if (((_net_48&_net_49)&_net_50))
+      end_sw <= 1'b1;
+end
+
+// synthesis translate_off
+// synopsys translate_off
+always @(posedge m_clock)
+  begin
+if (((_net_55|((_net_48&_net_49)&_net_50))==1'b1) ||
+ ((_net_55|((_net_48&_net_49)&_net_50))==1'b0) ) begin
+ if ((_net_55&((_net_48&_net_49)&_net_50)))
+ begin $display("Warning: assign collision(cam_test:end_sw) at %d",$time);
+
+  end
+ end
+ else 
+ $display("Warning: register set hazard(cam_test:end_sw) at %d",$time);
 
   end
 
@@ -1630,5 +1825,5 @@ initial begin
 end
 endmodule
 
-/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sun Feb 16 20:37:11 2025
+/*Produced by NSL Core(version=20240708), IP ARCH, Inc. Sat Mar  8 06:10:38 2025
  Licensed to :EVALUATION USER*/
