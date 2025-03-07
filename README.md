@@ -6,6 +6,7 @@ ov7670,NSL,DE0CV,UART,libjpeg,128*128pixel
 <br>fs90rモーター
 <br>uartもgpiofpgaからPCに画像おくる。
 <br>wsl1で受信c言語で行う。
+<br>vramは出力タイミングが遅い
 <br>
 
 
